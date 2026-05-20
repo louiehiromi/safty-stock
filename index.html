@@ -526,6 +526,8 @@ const WO_DATA_KEY = 'wo_parsed_data_v2';
 const SALES_DATA_KEY = 'sales_parsed_data_v1';
 const STOCK_EDIT_KEY = 'stock_manual_edits_v1';
 const REF_EDIT_KEY = 'ref_manual_edits_v1';
+const SAFETY_EDIT_KEY = 'safety_weeks_manual_edits_v1';
+const VISIBILITY_KEY = 'product_visibility_settings_v1';
 const SLOT_CFG = {
   inv:{label:'現有庫存',hint:'_庫存_now_.xlsx'},
   wo:{label:'生產工單',hint:'生產工單進行狀況.xlsx'},
@@ -617,6 +619,41 @@ function clearManualStockEdits(){
 
 function clearManualRefEdits(){
   try{ localStorage.removeItem(REF_EDIT_KEY); }catch(e){}
+}
+
+function saveSafetyWeeksEdit(code, value){
+  const edits = getStoredJson(SAFETY_EDIT_KEY, {});
+  edits[code] = Math.max(1, parseInt(value, 10) || 1);
+  setStoredJson(SAFETY_EDIT_KEY, edits);
+}
+
+function loadManualSafetyWeeksEdits(){
+  const edits = getStoredJson(SAFETY_EDIT_KEY, {});
+  products.forEach(p=>{
+    if(Object.prototype.hasOwnProperty.call(edits, p.code)){
+      p.safetyWeeks = Math.max(1, parseInt(edits[p.code], 10) || 1);
+      p.safetyStock = Math.round(p.weeklyAvg * p.safetyWeeks);
+      recalcFromStock(p);
+    }
+  });
+}
+
+function saveVisibilitySettings(){
+  const hiddenCodes = products.filter(p=>!p.visible).map(p=>p.code);
+  setStoredJson(VISIBILITY_KEY, hiddenCodes);
+}
+
+function loadVisibilitySettings(){
+  const hiddenCodes = getStoredJson(VISIBILITY_KEY, []);
+  const hiddenSet = new Set(Array.isArray(hiddenCodes) ? hiddenCodes : []);
+  products.forEach(p=>{ p.visible = !hiddenSet.has(p.code); });
+  updateHiddenBadge();
+}
+
+function clearVisibilitySettings(){
+  try{ localStorage.removeItem(VISIBILITY_KEY); }catch(e){}
+  products.forEach(p=>{ p.visible = true; });
+  updateHiddenBadge();
 }
 
 function parseWorkOrderFile(file, meta){
@@ -805,6 +842,7 @@ function parseInventoryFile(file, meta){
       const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:false});
       const stockByCode = extractInventory(rows);
       clearManualStockEdits();
+      clearVisibilitySettings();
       const result = applyInventory(stockByCode);
       try{ localStorage.setItem(INV_DATA_KEY, JSON.stringify({meta, stockByCode})); }catch(err){}
       refreshAfterDataUpdate();
@@ -992,6 +1030,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadStoredWorkOrders();
   loadManualStockEdits();
   loadManualRefEdits();
+  loadManualSafetyWeeksEdits();
+  loadVisibilitySettings();
   renderTable();
   updateStats();
   populatePOSelect();
@@ -1132,6 +1172,7 @@ function toggleVis(code){
   const p=products.find(x=>x.code===code);
   if(!p) return;
   p.visible=!p.visible;
+  saveVisibilitySettings();
   updateHiddenBadge();
   renderTable();
   updateStats();
@@ -1151,6 +1192,7 @@ function updateHiddenBadge(){
 }
 function resetVisibility(){
   products.forEach(p=>p.visible=true);
+  saveVisibilitySettings();
   updateHiddenBadge();
   if(currentFilter==='hidden'){
     currentFilter='all';
@@ -1165,6 +1207,7 @@ function updateSafetyWeeks(code,val){
   if(!p) return;
   const w=Math.max(1,parseInt(val)||1);
   p.safetyWeeks=w;
+  saveSafetyWeeksEdit(code, w);
   p.safetyStock=Math.round(p.weeklyAvg*w);
   const inc=p.workOrders.reduce((s,o)=>s+(o.remaining>0?o.remaining:0),0);
   p.needsReorder=(p.currentStock+inc)<p.safetyStock;
