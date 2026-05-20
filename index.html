@@ -22,6 +22,36 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5}
 
+/* ── Prevent whole-page scrolling: keep only table body scrollable ── */
+html, body{
+  height:100%;
+  overflow:hidden;
+}
+#tab-inventory.tab-content.active{
+  height:100vh;
+  overflow:hidden;
+}
+#tab-inventory .page{
+  height:calc(100vh - var(--hdr));
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  padding-bottom:12px;
+}
+#tab-inventory .tbl-outer{
+  flex:1;
+  min-height:0;
+}
+#tab-inventory .tbl-scroll{
+  height:100%;
+  max-height:none;
+}
+#tab-tools.tab-content.active{
+  height:100vh;
+  overflow:auto;
+}
+
+
 /* ── APP HEADER ── */
 .app-header{
   background:var(--surface);border-bottom:1px solid var(--border);
@@ -457,16 +487,17 @@ tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
 </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════
 //  BUILT-IN DATA (2026-05-20)
 // ═══════════════════════════════════════════════
-const BUILTIN = {"products":[{"code":"P01001","shortName":"植奶(罐)","fullName":"生機高鈣植物奶(罐)","currentStock":1411,"weeklyAvg":86.8,"annualWeeklyAvg":96.8,"safetyWeeks":6,"safetyStock":521,"weeksAvailable":16.3,"stockOutDate":"2026-09-11","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":508,"may":347,"jun":515},"annual2025":5034},{"code":"P01002","shortName":"植奶(盒)","fullName":"(盒)生機高鈣植物奶","currentStock":1168,"weeklyAvg":95.2,"annualWeeklyAvg":97.6,"safetyWeeks":6,"safetyStock":571,"weeksAvailable":12.3,"stockOutDate":"2026-08-14","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":698,"may":381,"jun":368},"annual2025":5073},{"code":"P01003","shortName":"松子杏仁","fullName":"百穀精華之松子杏仁(盒)","currentStock":1207,"weeklyAvg":367.5,"annualWeeklyAvg":693.5,"safetyWeeks":4,"safetyStock":1470,"weeksAvailable":3.3,"stockOutDate":"2026-06-12","workOrders":[{"deliveryDate":"2026-06-02","qty":2400,"remaining":2400}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":4095,"may":1470,"jun":1073},"annual2025":36062},{"code":"P01006","shortName":"多榖奶","fullName":"多穀奶(罐)","currentStock":676,"weeklyAvg":69.8,"annualWeeklyAvg":74.4,"safetyWeeks":4,"safetyStock":279,"weeksAvailable":9.7,"stockOutDate":"2026-07-26","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":369,"may":279,"jun":197},"annual2025":3868},{"code":"P01009","shortName":"豐活","fullName":"豐活燕麥穀物奶","currentStock":315,"weeklyAvg":74.2,"annualWeeklyAvg":39.0,"safetyWeeks":5,"safetyStock":371,"weeksAvailable":4.2,"stockOutDate":"2026-06-18","workOrders":[{"deliveryDate":"2026-06-16","qty":900,"remaining":900}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":294,"may":297,"jun":294},"annual2025":1836},{"code":"P01004","shortName":"杏仁粉","fullName":"百榖精華之杏仁粉(罐)","currentStock":91,"weeklyAvg":80.2,"annualWeeklyAvg":66.4,"safetyWeeks":5,"safetyStock":401,"weeksAvailable":1.1,"stockOutDate":"2026-05-27","workOrders":[{"deliveryDate":"2026-05-18","qty":600,"remaining":600}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":253,"may":321,"jun":308},"annual2025":3451},{"code":"P01005","shortName":"黑芝麻","fullName":"百榖精華之黑芝麻粉(罐)","currentStock":260,"weeklyAvg":73.0,"annualWeeklyAvg":51.7,"safetyWeeks":3,"safetyStock":219,"weeksAvailable":3.6,"stockOutDate":"2026-06-14","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":148,"may":292,"jun":258},"annual2025":2686},{"code":"P01011","shortName":"蓮藕粉","fullName":"蓮藕粉","currentStock":-148,"weeklyAvg":37.5,"annualWeeklyAvg":14.4,"safetyWeeks":3,"safetyStock":112,"weeksAvailable":-3.9,"stockOutDate":"2026-05-20","workOrders":[{"deliveryDate":"2026-06-02","qty":350,"remaining":350}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":150,"may":150,"jun":150},"annual2025":0},{"code":"P02005","shortName":"蔓(罐)","fullName":"生機蔓越莓(罐)","currentStock":220,"weeklyAvg":76.2,"annualWeeklyAvg":63.8,"safetyWeeks":3,"safetyStock":229,"weeksAvailable":2.9,"stockOutDate":"2026-06-09","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-06-02","refMonths":{"apr":320,"may":305,"jun":67},"annual2025":3319},{"code":"P02006","shortName":"堅果(罐)","fullName":"生機綜合堅果(罐)","currentStock":838,"weeklyAvg":49.5,"annualWeeklyAvg":48.3,"safetyWeeks":3,"safetyStock":148,"weeksAvailable":16.9,"stockOutDate":"2026-09-15","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":183,"may":198,"jun":78},"annual2025":2511},{"code":"P02004","shortName":"無300罐","fullName":"超大無籽葡萄乾300g(罐)","currentStock":-46,"weeklyAvg":73.2,"annualWeeklyAvg":139.2,"safetyWeeks":3,"safetyStock":220,"weeksAvailable":-0.6,"stockOutDate":"2026-05-20","workOrders":[{"deliveryDate":"2026-05-13","qty":333,"remaining":333}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":537,"may":293,"jun":184},"annual2025":7236},{"code":"P02010","shortName":"蜜棗(罐)","fullName":"生機蜜棗乾(罐)","currentStock":0,"weeklyAvg":2.6,"annualWeeklyAvg":2.6,"safetyWeeks":3,"safetyStock":8,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":54,"may":0,"jun":0},"annual2025":135},{"code":"P02007","shortName":"堅果(袋)","fullName":"生機綜合堅果(袋)","currentStock":2363,"weeklyAvg":854.2,"annualWeeklyAvg":560.1,"safetyWeeks":3,"safetyStock":2563,"weeksAvailable":2.8,"stockOutDate":"2026-06-08","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-06-01","refMonths":{"apr":2255,"may":3417,"jun":3127},"annual2025":29124},{"code":"P02028","shortName":"五享(袋)","fullName":"五享堅果(袋)","currentStock":171,"weeklyAvg":17.0,"annualWeeklyAvg":9.8,"safetyWeeks":3,"safetyStock":51,"weeksAvailable":10.1,"stockOutDate":"2026-07-29","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":27,"may":68,"jun":26},"annual2025":512},{"code":"P02002","shortName":"無200","fullName":"超大無籽葡萄乾200g(袋)","currentStock":-1287,"weeklyAvg":999.0,"annualWeeklyAvg":952.5,"safetyWeeks":3,"safetyStock":2997,"weeksAvailable":-1.3,"stockOutDate":"2026-05-20","workOrders":[{"deliveryDate":"2026-05-21","qty":3200,"remaining":3200}],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":3740,"may":3996,"jun":4301},"annual2025":49532},{"code":"P02016","shortName":"無240","fullName":"極品超大無籽葡萄乾(袋)","currentStock":486,"weeklyAvg":976.0,"annualWeeklyAvg":720.1,"safetyWeeks":3,"safetyStock":2928,"weeksAvailable":0.5,"stockOutDate":"2026-05-23","workOrders":[{"deliveryDate":"2026-05-22","qty":3200,"remaining":960},{"deliveryDate":"2026-05-22","qty":37,"remaining":37}],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":3487,"may":3904,"jun":2304},"annual2025":37444},{"code":"P02003","shortName":"有200","fullName":"超大有籽葡萄乾200g(袋)","currentStock":498,"weeklyAvg":278.8,"annualWeeklyAvg":225.9,"safetyWeeks":2,"safetyStock":558,"weeksAvailable":1.8,"stockOutDate":"2026-06-01","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-25","refMonths":{"apr":652,"may":1115,"jun":933},"annual2025":11747},{"code":"P02011","shortName":"蜜棗(袋)","fullName":"生機蜜棗乾(袋)","currentStock":-76,"weeklyAvg":366.5,"annualWeeklyAvg":317.0,"safetyWeeks":3,"safetyStock":1100,"weeksAvailable":-0.2,"stockOutDate":"2026-05-20","workOrders":[{"deliveryDate":"2026-05-21","qty":2225,"remaining":2225}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":1081,"may":1466,"jun":184},"annual2025":16485},{"code":"P02008","shortName":"蔓整(袋)","fullName":"蔓越莓(整粒)(袋)","currentStock":1347,"weeklyAvg":491.5,"annualWeeklyAvg":575.9,"safetyWeeks":2,"safetyStock":983,"weeksAvailable":2.7,"stockOutDate":"2026-06-07","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":3017,"may":1966,"jun":2627},"annual2025":29947},{"code":"P02001","shortName":"蔓半(袋)","fullName":"蔓越莓(剖半)(袋)","currentStock":170,"weeklyAvg":201.0,"annualWeeklyAvg":179.0,"safetyWeeks":2,"safetyStock":402,"weeksAvailable":0.8,"stockOutDate":"2026-05-25","workOrders":[{"deliveryDate":"2026-05-22","qty":680,"remaining":680}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":410,"may":804,"jun":499},"annual2025":9307},{"code":"P02009","shortName":"酸櫻桃","fullName":"生機酸櫻桃乾(包)","currentStock":-25,"weeklyAvg":105.5,"annualWeeklyAvg":90.4,"safetyWeeks":2,"safetyStock":211,"weeksAvailable":-0.2,"stockOutDate":"2026-05-20","workOrders":[{"deliveryDate":"2026-05-21","qty":340,"remaining":340}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":182,"may":422,"jun":330},"annual2025":4699},{"code":"P02013","shortName":"藍莓","fullName":"生機野生藍莓乾","currentStock":87,"weeklyAvg":293.0,"annualWeeklyAvg":266.6,"safetyWeeks":2,"safetyStock":586,"weeksAvailable":0.3,"stockOutDate":"2026-05-22","workOrders":[{"deliveryDate":"2026-05-21","qty":1200,"remaining":1200}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":1255,"may":1172,"jun":1473},"annual2025":13865},{"code":"P02020","shortName":"椰棗","fullName":"(去籽)生機椰棗乾","currentStock":288,"weeklyAvg":225.0,"annualWeeklyAvg":164.5,"safetyWeeks":4,"safetyStock":900,"weeksAvailable":1.3,"stockOutDate":"2026-05-29","workOrders":[{"deliveryDate":"2026-05-11","qty":230,"remaining":94}],"needsReorder":true,"suggestedArrival":"2026-05-22","refMonths":{"apr":669,"may":900,"jun":953},"annual2025":8556},{"code":"P02021","shortName":"巴西堅果","fullName":"巴西堅果","currentStock":0,"weeklyAvg":58.0,"annualWeeklyAvg":114.7,"safetyWeeks":3,"safetyStock":174,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":104,"may":232,"jun":299},"annual2025":5966},{"code":"P02012","shortName":"松子","fullName":"生機松子(袋)","currentStock":437,"weeklyAvg":74.5,"annualWeeklyAvg":157.6,"safetyWeeks":3,"safetyStock":224,"weeksAvailable":5.9,"stockOutDate":"2026-06-30","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":303,"may":298,"jun":427},"annual2025":8193},{"code":"P03001","shortName":"梅子果凍","fullName":"生機梅子蒟蒻果凍","currentStock":791,"weeklyAvg":1636.8,"annualWeeklyAvg":631.4,"safetyWeeks":6,"safetyStock":9821,"weeksAvailable":0.5,"stockOutDate":"2026-05-23","workOrders":[{"deliveryDate":"2026-05-21","qty":2400,"remaining":2400},{"deliveryDate":"2026-06-11","qty":2400,"remaining":2400}],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":3927,"may":6547,"jun":1265},"annual2025":35010},{"code":"P04003","shortName":"紅薏仁","fullName":"台灣紅薏仁","currentStock":76,"weeklyAvg":62.5,"annualWeeklyAvg":78.1,"safetyWeeks":3,"safetyStock":188,"weeksAvailable":1.2,"stockOutDate":"2026-05-28","workOrders":[{"deliveryDate":"2026-05-19","qty":600,"remaining":600}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":185,"may":250,"jun":250},"annual2025":3251},{"code":"P04008","shortName":"黑米","fullName":"濁水溪黑米1kg","currentStock":136,"weeklyAvg":37.2,"annualWeeklyAvg":32.9,"safetyWeeks":2,"safetyStock":74,"weeksAvailable":3.7,"stockOutDate":"2026-06-14","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":115,"may":149,"jun":96},"annual2025":1713},{"code":"P04016","shortName":"小米","fullName":"有機小米","currentStock":51,"weeklyAvg":5.0,"annualWeeklyAvg":2.4,"safetyWeeks":3,"safetyStock":15,"weeksAvailable":10.2,"stockOutDate":"2026-07-30","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":20,"may":20,"jun":20},"annual2025":6},{"code":"P04010","shortName":"一匙鮮-甜","fullName":"一匙鮮竹鹽蔬果粉-甜菜根","currentStock":178,"weeklyAvg":116.0,"annualWeeklyAvg":100.5,"safetyWeeks":2,"safetyStock":232,"weeksAvailable":1.5,"stockOutDate":"2026-05-30","workOrders":[{"deliveryDate":"2026-05-26","qty":360,"remaining":360}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":427,"may":464,"jun":374},"annual2025":5117},{"code":"P04011","shortName":"一匙鮮-牛","fullName":"一匙鮮竹鹽蔬果粉-牛蒡","currentStock":326,"weeklyAvg":200.0,"annualWeeklyAvg":201.8,"safetyWeeks":2,"safetyStock":400,"weeksAvailable":1.6,"stockOutDate":"2026-05-31","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-24","refMonths":{"apr":785,"may":800,"jun":800},"annual2025":11042},{"code":"P04012","shortName":"一匙鮮-綠","fullName":"一匙鮮竹鹽蔬果粉-綠色蔬菜","currentStock":1265,"weeklyAvg":450.0,"annualWeeklyAvg":425.9,"safetyWeeks":2,"safetyStock":900,"weeksAvailable":2.8,"stockOutDate":"2026-06-08","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":2010,"may":1800,"jun":1399},"annual2025":25264},{"code":"P03007","shortName":"藜麥海苔","fullName":"藜麥海苔脆片","currentStock":1410,"weeklyAvg":57.0,"annualWeeklyAvg":52.2,"safetyWeeks":2,"safetyStock":114,"weeksAvailable":24.7,"stockOutDate":"2026-11-08","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":242,"may":228,"jun":195},"annual2025":2715},{"code":"P03011","shortName":"巧酥派","fullName":"杏仁芝麻巧酥派","currentStock":0,"weeklyAvg":33.0,"annualWeeklyAvg":26.2,"safetyWeeks":3,"safetyStock":99,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":247,"may":132,"jun":84},"annual2025":1365},{"code":"P03012","shortName":"迷你派","fullName":"可可燕麥迷你派","currentStock":567,"weeklyAvg":15.2,"annualWeeklyAvg":19.7,"safetyWeeks":3,"safetyStock":46,"weeksAvailable":37.3,"stockOutDate":"2027-02-05","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":51,"may":61,"jun":34},"annual2025":1024},{"code":"P04001","shortName":"玄米油","fullName":"玄米油","currentStock":2273,"weeklyAvg":264.0,"annualWeeklyAvg":156.5,"safetyWeeks":20,"safetyStock":5280,"weeksAvailable":8.6,"stockOutDate":"2026-07-19","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-07-12","refMonths":{"apr":599,"may":1056,"jun":1015},"annual2025":8138},{"code":"P04017","shortName":"紫蘇油","fullName":"紫蘇油","currentStock":408,"weeklyAvg":25.0,"annualWeeklyAvg":13.5,"safetyWeeks":3,"safetyStock":75,"weeksAvailable":16.3,"stockOutDate":"2026-09-11","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":100,"may":100,"jun":100},"annual2025":0},{"code":"P03002","shortName":"72%咖","fullName":"咖啡豆72%黑巧克力(包)","currentStock":0,"weeklyAvg":15.4,"annualWeeklyAvg":15.4,"safetyWeeks":4,"safetyStock":62,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":-11},"annual2025":800},{"code":"P03003","shortName":"72%葡","fullName":"葡萄乾72%黑巧克力(包)","currentStock":0,"weeklyAvg":92.4,"annualWeeklyAvg":92.4,"safetyWeeks":4,"safetyStock":370,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":4804},{"code":"P03004","shortName":"72%杏","fullName":"杏仁72%黑巧克力(包)","currentStock":0,"weeklyAvg":95.1,"annualWeeklyAvg":95.1,"safetyWeeks":4,"safetyStock":380,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":42,"may":0,"jun":-7},"annual2025":4946},{"code":"P03005","shortName":"72%金","fullName":"金幣72%黑巧克力(包)","currentStock":27,"weeklyAvg":66.4,"annualWeeklyAvg":66.4,"safetyWeeks":4,"safetyStock":266,"weeksAvailable":0.4,"stockOutDate":"2026-05-22","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":3455},{"code":"P03006","shortName":"72%米","fullName":"黑米菓72%黑巧克力(袋)","currentStock":0,"weeklyAvg":9.4,"annualWeeklyAvg":9.4,"safetyWeeks":4,"safetyStock":38,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":-8},"annual2025":491},{"code":"P03013","shortName":"72%夏","fullName":"夏威夷豆72%黑巧克力","currentStock":0,"weeklyAvg":155.6,"annualWeeklyAvg":155.6,"safetyWeeks":4,"safetyStock":622,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":8092},{"code":"P02022","shortName":"櫻桃罐","fullName":"酸櫻桃乾(罐)","currentStock":0,"weeklyAvg":3.6,"annualWeeklyAvg":3.6,"safetyWeeks":3,"safetyStock":11,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":188},{"code":"P02023","shortName":"四寶","fullName":"養生四寶堅果(罐)","currentStock":0,"weeklyAvg":0.2,"annualWeeklyAvg":8.3,"safetyWeeks":3,"safetyStock":1,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":1,"jun":10},"annual2025":432},{"code":"P02029","shortName":"五享(罐)","fullName":"五享堅果(罐)","currentStock":150,"weeklyAvg":1,"annualWeeklyAvg":0.4,"safetyWeeks":3,"safetyStock":3,"weeksAvailable":150.0,"stockOutDate":"2029-04-04","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":0,"may":0,"jun":0},"annual2025":21},{"code":"P04014","shortName":"多穀粥","fullName":"一碗鮮多穀粥 - 蔬菜","currentStock":0,"weeklyAvg":7.0,"annualWeeklyAvg":12.9,"safetyWeeks":2,"safetyStock":14,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":12,"may":28,"jun":3},"annual2025":672},{"code":"P03014","shortName":"莓果派","fullName":"蘋果覆盆莓迷你派","currentStock":0,"weeklyAvg":17.8,"annualWeeklyAvg":17.8,"safetyWeeks":3,"safetyStock":53,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":51,"may":71,"jun":50},"annual2025":928}],"invUploadTime":"2026/05/20  9:45:14","woUploadTime":"2026/05/19  12:51:44"};
+const BUILTIN = {"products":[{"code":"P01001","shortName":"植奶(罐)","fullName":"生機高鈣植物奶(罐)","currentStock":1399,"weeklyAvg":86.8,"annualWeeklyAvg":96.8,"safetyWeeks":6,"safetyStock":521,"weeksAvailable":16.1,"stockOutDate":"2026-09-09","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":508,"may":347,"jun":515},"annual2025":5034},{"code":"P01002","shortName":"植奶(盒)","fullName":"(盒)生機高鈣植物奶","currentStock":1159,"weeklyAvg":95.2,"annualWeeklyAvg":97.6,"safetyWeeks":6,"safetyStock":571,"weeksAvailable":12.2,"stockOutDate":"2026-08-13","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":698,"may":381,"jun":368},"annual2025":5073},{"code":"P01003","shortName":"松子杏仁","fullName":"百穀精華之松子杏仁(盒)","currentStock":1090,"weeklyAvg":367.5,"annualWeeklyAvg":693.5,"safetyWeeks":4,"safetyStock":1470,"weeksAvailable":3.0,"stockOutDate":"2026-06-10","workOrders":[{"woNum":"2026/05/14-4","deliveryDate":"2026-06-02","qty":2400,"remaining":2400}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":4095,"may":1470,"jun":1073},"annual2025":36062},{"code":"P01006","shortName":"多榖奶","fullName":"多穀奶(罐)","currentStock":664,"weeklyAvg":69.8,"annualWeeklyAvg":74.4,"safetyWeeks":4,"safetyStock":279,"weeksAvailable":9.5,"stockOutDate":"2026-07-25","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":369,"may":279,"jun":197},"annual2025":3868},{"code":"P01009","shortName":"豐活","fullName":"豐活燕麥穀物奶","currentStock":315,"weeklyAvg":74.2,"annualWeeklyAvg":35.3,"safetyWeeks":5,"safetyStock":371,"weeksAvailable":4.2,"stockOutDate":"2026-06-18","workOrders":[{"woNum":"2026/05/12-2","deliveryDate":"2026-06-16","qty":900,"remaining":900}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":294,"may":297,"jun":294},"annual2025":1836},{"code":"P01004","shortName":"杏仁粉","fullName":"百榖精華之杏仁粉(罐)","currentStock":613,"weeklyAvg":80.2,"annualWeeklyAvg":66.4,"safetyWeeks":5,"safetyStock":401,"weeksAvailable":7.6,"stockOutDate":"2026-07-12","workOrders":[{"woNum":"2026/04/20-6","deliveryDate":"2026-05-18","qty":600,"remaining":600}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":253,"may":321,"jun":308},"annual2025":3451},{"code":"P01005","shortName":"黑芝麻","fullName":"百榖精華之黑芝麻粉(罐)","currentStock":210,"weeklyAvg":73.0,"annualWeeklyAvg":51.7,"safetyWeeks":3,"safetyStock":219,"weeksAvailable":2.9,"stockOutDate":"2026-06-09","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-06-02","refMonths":{"apr":148,"may":292,"jun":258},"annual2025":2686},{"code":"P01011","shortName":"蓮藕粉","fullName":"蓮藕粉","currentStock":212,"weeklyAvg":37.5,"annualWeeklyAvg":14.4,"safetyWeeks":3,"safetyStock":112,"weeksAvailable":5.7,"stockOutDate":"2026-06-28","workOrders":[{"woNum":"2026/04/28-2","deliveryDate":"2026-06-02","qty":350,"remaining":350}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":150,"may":150,"jun":150},"annual2025":0},{"code":"P02005","shortName":"蔓(罐)","fullName":"生機蔓越莓(罐)","currentStock":144,"weeklyAvg":76.2,"annualWeeklyAvg":63.8,"safetyWeeks":3,"safetyStock":229,"weeksAvailable":1.9,"stockOutDate":"2026-06-02","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-26","refMonths":{"apr":320,"may":305,"jun":67},"annual2025":3319},{"code":"P02006","shortName":"堅果(罐)","fullName":"生機綜合堅果(罐)","currentStock":827,"weeklyAvg":49.5,"annualWeeklyAvg":48.3,"safetyWeeks":3,"safetyStock":148,"weeksAvailable":16.7,"stockOutDate":"2026-09-13","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":183,"may":198,"jun":78},"annual2025":2511},{"code":"P02004","shortName":"無300罐","fullName":"超大無籽葡萄乾300g(罐)","currentStock":-363,"weeklyAvg":73.2,"annualWeeklyAvg":139.2,"safetyWeeks":3,"safetyStock":220,"weeksAvailable":-5.0,"stockOutDate":"2026-04-15","workOrders":[{"woNum":"2026/05/06-1","deliveryDate":"2026-05-13","qty":333,"remaining":333}],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":537,"may":293,"jun":184},"annual2025":7236},{"code":"P02010","shortName":"蜜棗(罐)","fullName":"生機蜜棗乾(罐)","currentStock":0,"weeklyAvg":2.6,"annualWeeklyAvg":2.6,"safetyWeeks":3,"safetyStock":8,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":54,"may":0,"jun":0},"annual2025":135},{"code":"P02007","shortName":"堅果(袋)","fullName":"生機綜合堅果(袋)","currentStock":2318,"weeklyAvg":854.2,"annualWeeklyAvg":560.1,"safetyWeeks":3,"safetyStock":2563,"weeksAvailable":2.7,"stockOutDate":"2026-06-07","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-31","refMonths":{"apr":2255,"may":3417,"jun":3127},"annual2025":29124},{"code":"P02028","shortName":"五享(袋)","fullName":"五享堅果(袋)","currentStock":121,"weeklyAvg":17.0,"annualWeeklyAvg":9.8,"safetyWeeks":3,"safetyStock":51,"weeksAvailable":7.1,"stockOutDate":"2026-07-08","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":27,"may":68,"jun":26},"annual2025":512},{"code":"P02002","shortName":"無200","fullName":"超大無籽葡萄乾200g(袋)","currentStock":1508,"weeklyAvg":999.0,"annualWeeklyAvg":952.5,"safetyWeeks":3,"safetyStock":2997,"weeksAvailable":1.5,"stockOutDate":"2026-05-30","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-23","refMonths":{"apr":3740,"may":3996,"jun":4301},"annual2025":49532},{"code":"P02016","shortName":"無240","fullName":"極品超大無籽葡萄乾(袋)","currentStock":2768,"weeklyAvg":976.0,"annualWeeklyAvg":720.1,"safetyWeeks":3,"safetyStock":2928,"weeksAvailable":2.8,"stockOutDate":"2026-06-08","workOrders":[{"woNum":"2026/05/12-3","deliveryDate":"2026-05-22","qty":960,"remaining":960}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":3487,"may":3904,"jun":2304},"annual2025":37444},{"code":"P02003","shortName":"有200","fullName":"超大有籽葡萄乾200g(袋)","currentStock":498,"weeklyAvg":278.8,"annualWeeklyAvg":225.9,"safetyWeeks":2,"safetyStock":558,"weeksAvailable":1.8,"stockOutDate":"2026-06-01","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-25","refMonths":{"apr":652,"may":1115,"jun":933},"annual2025":11747},{"code":"P02011","shortName":"蜜棗(袋)","fullName":"生機蜜棗乾(袋)","currentStock":-78,"weeklyAvg":366.5,"annualWeeklyAvg":317.0,"safetyWeeks":3,"safetyStock":1100,"weeksAvailable":-0.2,"stockOutDate":"2026-05-18","workOrders":[{"woNum":"2026/05/11-2","deliveryDate":"2026-05-21","qty":2225,"remaining":2225}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":1081,"may":1466,"jun":184},"annual2025":16485},{"code":"P02008","shortName":"蔓整(袋)","fullName":"蔓越莓(整粒)(袋)","currentStock":1335,"weeklyAvg":491.5,"annualWeeklyAvg":575.9,"safetyWeeks":2,"safetyStock":983,"weeksAvailable":2.7,"stockOutDate":"2026-06-07","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":3017,"may":1966,"jun":2627},"annual2025":29947},{"code":"P02001","shortName":"蔓半(袋)","fullName":"蔓越莓(剖半)(袋)","currentStock":85,"weeklyAvg":201.0,"annualWeeklyAvg":179.0,"safetyWeeks":2,"safetyStock":402,"weeksAvailable":0.4,"stockOutDate":"2026-05-22","workOrders":[{"woNum":"2026/05/14-1","deliveryDate":"2026-05-22","qty":680,"remaining":680}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":410,"may":804,"jun":499},"annual2025":9307},{"code":"P02009","shortName":"酸櫻桃","fullName":"生機酸櫻桃乾(包)","currentStock":-128,"weeklyAvg":105.5,"annualWeeklyAvg":90.4,"safetyWeeks":2,"safetyStock":211,"weeksAvailable":-1.2,"stockOutDate":"2026-05-11","workOrders":[{"woNum":"2026/05/14-3","deliveryDate":"2026-05-21","qty":340,"remaining":340}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":182,"may":422,"jun":330},"annual2025":4699},{"code":"P02013","shortName":"藍莓","fullName":"生機野生藍莓乾","currentStock":-211,"weeklyAvg":293.0,"annualWeeklyAvg":266.6,"safetyWeeks":2,"safetyStock":586,"weeksAvailable":-0.7,"stockOutDate":"2026-05-15","workOrders":[{"woNum":"2026/05/11-3","deliveryDate":"2026-05-21","qty":1200,"remaining":1200}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":1255,"may":1172,"jun":1473},"annual2025":13865},{"code":"P02020","shortName":"椰棗","fullName":"(去籽)生機椰棗乾","currentStock":288,"weeklyAvg":225.0,"annualWeeklyAvg":164.5,"safetyWeeks":4,"safetyStock":900,"weeksAvailable":1.3,"stockOutDate":"2026-05-29","workOrders":[{"woNum":"2026/05/04-3","deliveryDate":"2026-05-11","qty":94,"remaining":94}],"needsReorder":true,"suggestedArrival":"2026-05-22","refMonths":{"apr":669,"may":900,"jun":953},"annual2025":8556},{"code":"P02021","shortName":"巴西堅果","fullName":"巴西堅果","currentStock":0,"weeklyAvg":58.0,"annualWeeklyAvg":114.7,"safetyWeeks":3,"safetyStock":174,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":104,"may":232,"jun":299},"annual2025":5966},{"code":"P02012","shortName":"松子","fullName":"生機松子(袋)","currentStock":435,"weeklyAvg":74.5,"annualWeeklyAvg":157.6,"safetyWeeks":3,"safetyStock":224,"weeksAvailable":5.8,"stockOutDate":"2026-06-29","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":303,"may":298,"jun":427},"annual2025":8193},{"code":"P03001","shortName":"梅子果凍","fullName":"生機梅子蒟蒻果凍","currentStock":479,"weeklyAvg":1636.8,"annualWeeklyAvg":673.3,"safetyWeeks":6,"safetyStock":9821,"weeksAvailable":0.3,"stockOutDate":"2026-05-22","workOrders":[{"woNum":"2026/03/23-2","deliveryDate":"2026-05-21","qty":2400,"remaining":2400},{"woNum":"2026/04/09-2","deliveryDate":"2026-06-11","qty":2400,"remaining":2400}],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":3927,"may":6547,"jun":1265},"annual2025":35010},{"code":"P04003","shortName":"紅薏仁","fullName":"台灣紅薏仁","currentStock":75,"weeklyAvg":62.5,"annualWeeklyAvg":62.5,"safetyWeeks":3,"safetyStock":188,"weeksAvailable":1.2,"stockOutDate":"2026-05-28","workOrders":[{"woNum":"2026/05/05-1","deliveryDate":"2026-05-19","qty":600,"remaining":600}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":185,"may":250,"jun":250},"annual2025":3251},{"code":"P04008","shortName":"黑米","fullName":"濁水溪黑米1kg","currentStock":114,"weeklyAvg":37.2,"annualWeeklyAvg":32.9,"safetyWeeks":2,"safetyStock":74,"weeksAvailable":3.1,"stockOutDate":"2026-06-10","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":115,"may":149,"jun":96},"annual2025":1713},{"code":"P04016","shortName":"小米","fullName":"有機小米","currentStock":51,"weeklyAvg":5.0,"annualWeeklyAvg":0.1,"safetyWeeks":3,"safetyStock":15,"weeksAvailable":10.2,"stockOutDate":"2026-07-30","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":20,"may":20,"jun":20},"annual2025":6},{"code":"P04010","shortName":"一匙鮮-甜","fullName":"一匙鮮竹鹽蔬果粉-甜菜根","currentStock":87,"weeklyAvg":116.0,"annualWeeklyAvg":98.4,"safetyWeeks":2,"safetyStock":232,"weeksAvailable":0.8,"stockOutDate":"2026-05-25","workOrders":[{"woNum":"2026/05/14-2","deliveryDate":"2026-05-26","qty":360,"remaining":360}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":427,"may":464,"jun":374},"annual2025":5117},{"code":"P04011","shortName":"一匙鮮-牛","fullName":"一匙鮮竹鹽蔬果粉-牛蒡","currentStock":1205,"weeklyAvg":200.0,"annualWeeklyAvg":212.3,"safetyWeeks":2,"safetyStock":400,"weeksAvailable":6.0,"stockOutDate":"2026-07-01","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":785,"may":800,"jun":800},"annual2025":11042},{"code":"P04012","shortName":"一匙鮮-綠","fullName":"一匙鮮竹鹽蔬果粉-綠色蔬菜","currentStock":1204,"weeklyAvg":450.0,"annualWeeklyAvg":485.8,"safetyWeeks":2,"safetyStock":900,"weeksAvailable":2.7,"stockOutDate":"2026-06-07","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":2010,"may":1800,"jun":1399},"annual2025":25264},{"code":"P03007","shortName":"藜麥海苔","fullName":"藜麥海苔脆片","currentStock":1334,"weeklyAvg":57.0,"annualWeeklyAvg":52.2,"safetyWeeks":2,"safetyStock":114,"weeksAvailable":23.4,"stockOutDate":"2026-10-30","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":242,"may":228,"jun":195},"annual2025":2715},{"code":"P03011","shortName":"巧酥派","fullName":"杏仁芝麻巧酥派","currentStock":0,"weeklyAvg":33.0,"annualWeeklyAvg":26.2,"safetyWeeks":3,"safetyStock":99,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":247,"may":132,"jun":84},"annual2025":1365},{"code":"P03012","shortName":"迷你派","fullName":"可可燕麥迷你派","currentStock":567,"weeklyAvg":15.2,"annualWeeklyAvg":19.7,"safetyWeeks":3,"safetyStock":46,"weeksAvailable":37.3,"stockOutDate":"2027-02-05","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":51,"may":61,"jun":34},"annual2025":1024},{"code":"P04001","shortName":"玄米油","fullName":"玄米油","currentStock":2165,"weeklyAvg":264.0,"annualWeeklyAvg":156.5,"safetyWeeks":20,"safetyStock":5280,"weeksAvailable":8.2,"stockOutDate":"2026-07-16","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-07-09","refMonths":{"apr":599,"may":1056,"jun":1015},"annual2025":8138},{"code":"P04017","shortName":"紫蘇油","fullName":"紫蘇油","currentStock":408,"weeklyAvg":25.0,"annualWeeklyAvg":13.5,"safetyWeeks":3,"safetyStock":75,"weeksAvailable":16.3,"stockOutDate":"2026-09-11","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":100,"may":100,"jun":100},"annual2025":0},{"code":"P03002","shortName":"72%咖","fullName":"咖啡豆72%黑巧克力(包)","currentStock":0,"weeklyAvg":15.4,"annualWeeklyAvg":15.4,"safetyWeeks":4,"safetyStock":62,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":-11},"annual2025":800},{"code":"P03003","shortName":"72%葡","fullName":"葡萄乾72%黑巧克力(包)","currentStock":0,"weeklyAvg":92.4,"annualWeeklyAvg":92.4,"safetyWeeks":4,"safetyStock":370,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":4804},{"code":"P03004","shortName":"72%杏","fullName":"杏仁72%黑巧克力(包)","currentStock":0,"weeklyAvg":95.1,"annualWeeklyAvg":95.1,"safetyWeeks":4,"safetyStock":380,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":42,"may":0,"jun":-7},"annual2025":4946},{"code":"P03005","shortName":"72%金","fullName":"金幣72%黑巧克力(包)","currentStock":27,"weeklyAvg":66.4,"annualWeeklyAvg":66.4,"safetyWeeks":4,"safetyStock":266,"weeksAvailable":0.4,"stockOutDate":"2026-05-22","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":3455},{"code":"P03006","shortName":"72%米","fullName":"黑米菓72%黑巧克力(袋)","currentStock":0,"weeklyAvg":9.4,"annualWeeklyAvg":9.4,"safetyWeeks":4,"safetyStock":38,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":-8},"annual2025":491},{"code":"P03013","shortName":"72%夏","fullName":"夏威夷豆72%黑巧克力","currentStock":0,"weeklyAvg":155.6,"annualWeeklyAvg":155.6,"safetyWeeks":4,"safetyStock":622,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":8092},{"code":"P02022","shortName":"櫻桃罐","fullName":"酸櫻桃乾(罐)","currentStock":0,"weeklyAvg":3.6,"annualWeeklyAvg":3.6,"safetyWeeks":3,"safetyStock":11,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":188},{"code":"P02023","shortName":"四寶","fullName":"養生四寶堅果(罐)","currentStock":0,"weeklyAvg":0.2,"annualWeeklyAvg":8.3,"safetyWeeks":3,"safetyStock":1,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":1,"jun":10},"annual2025":432},{"code":"P02029","shortName":"五享(罐)","fullName":"五享堅果(罐)","currentStock":150,"weeklyAvg":0.4,"annualWeeklyAvg":0.4,"safetyWeeks":3,"safetyStock":1,"weeksAvailable":375.0,"stockOutDate":"2033-07-27","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":0,"may":0,"jun":0},"annual2025":21},{"code":"P04014","shortName":"多穀粥","fullName":"一碗鮮多穀粥 - 蔬菜","currentStock":0,"weeklyAvg":7.0,"annualWeeklyAvg":12.9,"safetyWeeks":2,"safetyStock":14,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":12,"may":28,"jun":3},"annual2025":672},{"code":"P03014","shortName":"莓果派","fullName":"蘋果覆盆莓迷你派","currentStock":0,"weeklyAvg":17.8,"annualWeeklyAvg":17.8,"safetyWeeks":3,"safetyStock":53,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":51,"may":71,"jun":50},"annual2025":928}],"invUploadTime":"2026/05/20  9:45:14","woUploadTime":"2026/05/19  12:51:44"};
 
 // ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
-let products = BUILTIN.products.map(p=>({...p,visible:true}));
+let products = BUILTIN.products.map(p=>({...p, workOrders:[...(p.workOrders||[])], refMonths:{...(p.refMonths||{})}, visible:true}));
 let currentFilter='all', currentSearch='';
 
 // Single source of truth for "today" — use real date
@@ -476,6 +507,9 @@ function getToday(){ return new Date(); }
 //  UPLOAD (localStorage memory)
 // ═══════════════════════════════════════════════
 const LS_KEYS = {inv:'inv_meta', wo:'wo_meta', sales:'sales_meta'};
+const INV_DATA_KEY = 'inv_parsed_data_v1';
+const WO_DATA_KEY = 'wo_parsed_data_v1';
+const SALES_DATA_KEY = 'sales_parsed_data_v1';
 const SLOT_CFG = {
   inv:{label:'現有庫存',hint:'_庫存_now_.xlsx'},
   wo:{label:'生產工單',hint:'生產工單進行狀況.xlsx'},
@@ -494,8 +528,259 @@ function handleUpload(type, input){
   const meta = {name:file.name, time:ts};
   try{ localStorage.setItem(LS_KEYS[type], JSON.stringify(meta)); }catch(e){}
   updateSlotUI(type, meta);
-  // Note: actual parsing would need SheetJS — show uploaded indicator
-  showToast(`已記錄「${file.name}」上傳時間，實際資料解析需後端支援`);
+
+  if(type === 'wo'){
+    parseWorkOrderFile(file, meta);
+  } else if(type === 'inv'){
+    parseInventoryFile(file, meta);
+  } else if(type === 'sales'){
+    parseAnnualSalesFile(file, meta);
+  }
+}
+
+function parseWorkOrderFile(file, meta){
+  if(typeof XLSX === 'undefined'){
+    showToast('無法讀取 Excel：SheetJS 載入失敗，請確認網路連線後重新開啟此檔案');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, {type:'array', cellDates:true});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:false});
+      const ordersByCode = extractWorkOrders(rows);
+      const result = applyWorkOrders(ordersByCode);
+      try{ localStorage.setItem(WO_DATA_KEY, JSON.stringify({meta, ordersByCode})); }catch(err){}
+      renderTable();
+      updateStats();
+      populatePOSelect();
+      showToast(`已讀取「${file.name}」：更新 ${result.updated} 個品項、${result.active} 筆未生產工單${result.ignored ? `，略過 ${result.ignored} 筆未建檔品項` : ''}`);
+    }catch(err){
+      console.error(err);
+      showToast('工單 Excel 解析失敗，請確認檔案格式是否為「生產工單進行狀況.xlsx」');
+    }
+  };
+  reader.onerror = function(){ showToast('讀取檔案失敗，請重新上傳一次'); };
+  reader.readAsArrayBuffer(file);
+}
+
+function cleanText(v){
+  return (v===null || v===undefined) ? '' : String(v).replace(/\s+/g,' ').trim();
+}
+
+function parseNumber(v){
+  if(v===null || v===undefined || v==='') return 0;
+  const n = Number(String(v).replace(/,/g,'').trim());
+  return isNaN(n) ? 0 : n;
+}
+
+function normalizeWoNum(v){
+  return cleanText(v).replace(/\s*-\s*/g,'-');
+}
+
+function normalizeDate(v){
+  if(!v) return '';
+  if(v instanceof Date && !isNaN(v)) return v.toISOString().slice(0,10);
+  const str = cleanText(v);
+  const m = str.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+  if(!m) return str;
+  return `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
+}
+
+function extractWorkOrders(rows){
+  const ordersByCode = {};
+  let lastDetail = null;
+  rows.forEach(row=>{
+    const colA = cleanText(row[0]);
+    const colB = cleanText(row[1]);
+    if(/^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}/.test(colA)){
+      lastDetail = {
+        woNum: normalizeWoNum(colA),
+        itemName: colB,
+        deliveryDate: normalizeDate(row[3]),
+        qty: parseNumber(row[4]),
+        produced: parseNumber(row[7]),
+        remaining: parseNumber(row[8])
+      };
+      return;
+    }
+    const m = colA.match(/\b(P\d{5})\b\s*\//);
+    if(m && lastDetail){
+      const code = m[1];
+      if(!ordersByCode[code]) ordersByCode[code] = [];
+      ordersByCode[code].push({...lastDetail});
+      lastDetail = null;
+    }
+  });
+  return ordersByCode;
+}
+
+function applyWorkOrders(ordersByCode){
+  const knownCodes = new Set(products.map(p=>p.code));
+  let updated = 0, active = 0, ignored = 0;
+  products.forEach(p=>{
+    // Only keep unfinished work orders. Completed orders (remaining <= 0) should behave like no work order.
+    p.workOrders = (ordersByCode[p.code] || [])
+      .filter(o=>parseNumber(o.remaining)>0)
+      .map(o=>({
+        woNum:o.woNum,
+        deliveryDate:o.deliveryDate,
+        qty:o.qty,
+        remaining:parseNumber(o.remaining)
+      }));
+    if(ordersByCode[p.code]) updated++;
+    active += p.workOrders.length;
+    recalcFromStock(p);
+  });
+  Object.keys(ordersByCode).forEach(code=>{ if(!knownCodes.has(code)) ignored++; });
+  return {updated, active, ignored};
+}
+
+function loadStoredWorkOrders(){
+  try{
+    const raw = localStorage.getItem(WO_DATA_KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    if(saved && saved.ordersByCode) applyWorkOrders(saved.ordersByCode);
+  }catch(e){}
+}
+
+
+function refreshAfterDataUpdate(){
+  renderTable();
+  updateStats();
+  populatePOSelect();
+  const poResult = document.getElementById('po-result');
+  if(poResult && poResult.classList.contains('show')) calcPO();
+}
+
+function parseInventoryFile(file, meta){
+  if(typeof XLSX === 'undefined'){
+    showToast('無法讀取 Excel：SheetJS 載入失敗，請確認網路連線後重新開啟此檔案');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, {type:'array', cellDates:true});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:false});
+      const stockByCode = extractInventory(rows);
+      const result = applyInventory(stockByCode);
+      try{ localStorage.setItem(INV_DATA_KEY, JSON.stringify({meta, stockByCode})); }catch(err){}
+      refreshAfterDataUpdate();
+      showToast(`已讀取「${file.name}」：更新 ${result.updated} 個庫存品項${result.ignored ? `，略過 ${result.ignored} 筆未建檔品項` : ''}`);
+    }catch(err){
+      console.error(err);
+      showToast('庫存 Excel 解析失敗，請確認檔案格式是否為「庫存_now.xlsx」');
+    }
+  };
+  reader.onerror = function(){ showToast('讀取檔案失敗，請重新上傳一次'); };
+  reader.readAsArrayBuffer(file);
+}
+
+function extractInventory(rows){
+  const stockByCode = {};
+  rows.forEach(row=>{
+    const code = cleanText(row[0]);
+    if(/^P\d{5}$/.test(code)){
+      stockByCode[code] = Math.round(parseNumber(row[2]));
+    }
+  });
+  return stockByCode;
+}
+
+function applyInventory(stockByCode){
+  const knownCodes = new Set(products.map(p=>p.code));
+  let updated = 0, ignored = 0;
+  products.forEach(p=>{
+    if(Object.prototype.hasOwnProperty.call(stockByCode, p.code)){
+      p.currentStock = stockByCode[p.code];
+      recalcFromStock(p);
+      updated++;
+    }
+  });
+  Object.keys(stockByCode).forEach(code=>{ if(!knownCodes.has(code)) ignored++; });
+  return {updated, ignored};
+}
+
+function loadStoredInventory(){
+  try{
+    const raw = localStorage.getItem(INV_DATA_KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    if(saved && saved.stockByCode) applyInventory(saved.stockByCode);
+  }catch(e){}
+}
+
+function parseAnnualSalesFile(file, meta){
+  if(typeof XLSX === 'undefined'){
+    showToast('無法讀取 Excel：SheetJS 載入失敗，請確認網路連線後重新開啟此檔案');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, {type:'array', cellDates:true});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:false});
+      const salesByCode = extractAnnualSales(rows);
+      const result = applyAnnualSales(salesByCode);
+      try{ localStorage.setItem(SALES_DATA_KEY, JSON.stringify({meta, salesByCode})); }catch(err){}
+      refreshAfterDataUpdate();
+      showToast(`已讀取「${file.name}」：更新 ${result.updated} 個年度銷量品項${result.ignored ? `，略過 ${result.ignored} 筆未建檔品項` : ''}`);
+    }catch(err){
+      console.error(err);
+      showToast('年度銷量 Excel 解析失敗，請確認檔案格式是否為「品項年銷統計.xlsx」');
+    }
+  };
+  reader.onerror = function(){ showToast('讀取檔案失敗，請重新上傳一次'); };
+  reader.readAsArrayBuffer(file);
+}
+
+function extractAnnualSales(rows){
+  const salesByCode = {};
+  rows.forEach(row=>{
+    const code = cleanText(row[0]);
+    if(/^P\d{5}$/.test(code)){
+      salesByCode[code] = Math.round(parseNumber(row[2]));
+    }
+  });
+  return salesByCode;
+}
+
+function applyAnnualSales(salesByCode){
+  const knownCodes = new Set(products.map(p=>p.code));
+  let updated = 0, ignored = 0;
+  products.forEach(p=>{
+    if(Object.prototype.hasOwnProperty.call(salesByCode, p.code)){
+      const qty = Math.round(parseNumber(salesByCode[p.code]));
+      p.annual2025 = qty;
+      p.annualWeeklyAvg = Math.round((qty / 52) * 10) / 10;
+      // 年銷檔沒有月份欄位；若此品項沒有5月參考銷量，才用年週均作為週銷量備援。
+      if(!p.refMonths || !parseNumber(p.refMonths.may)){
+        p.weeklyAvg = p.annualWeeklyAvg;
+        p.safetyStock = Math.round(p.weeklyAvg * p.safetyWeeks);
+      }
+      recalcFromStock(p);
+      updated++;
+    }
+  });
+  Object.keys(salesByCode).forEach(code=>{ if(!knownCodes.has(code)) ignored++; });
+  return {updated, ignored};
+}
+
+function loadStoredAnnualSales(){
+  try{
+    const raw = localStorage.getItem(SALES_DATA_KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    if(saved && saved.salesByCode) applyAnnualSales(saved.salesByCode);
+  }catch(e){}
 }
 
 function updateSlotUI(type, meta){
@@ -546,6 +831,9 @@ function showToast(msg){
 // ═══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
   loadUploadMeta();
+  loadStoredInventory();
+  loadStoredAnnualSales();
+  loadStoredWorkOrders();
   renderTable();
   updateStats();
   populatePOSelect();
@@ -567,7 +855,7 @@ function showTab(id,btn){
 // ═══════════════════════════════════════════════
 function getRowClass(p){
   if(!p.visible) return 'row-hidden';
-  const inc=p.workOrders.reduce((s,o)=>s+o.remaining,0);
+  const inc=p.workOrders.reduce((s,o)=>s+(o.remaining>0?o.remaining:0),0);
   if(p.currentStock+inc<p.safetyStock&&p.needsReorder) return 'row-danger';
   if(p.weeksAvailable!==null&&p.weeksAvailable<2) return 'row-warn';
   return 'row-ok';
@@ -575,8 +863,9 @@ function getRowClass(p){
 function getStatusPill(p){
   if(!p.visible) return '<span class="pill" style="opacity:.4">隱藏</span>';
   if(p.needsReorder) return '<span class="pill pill-danger">需採購</span>';
-  if(p.weeksAvailable!==null&&p.weeksAvailable<2&&!p.workOrders.length) return '<span class="pill pill-warn">庫存偏低</span>';
-  if(p.workOrders.length>0) return '<span class="pill pill-info">工單中</span>';
+  const activeOrders = (p.workOrders||[]).filter(o=>parseNumber(o.remaining)>0);
+  if(p.weeksAvailable!==null&&p.weeksAvailable<2&&!activeOrders.length) return '<span class="pill pill-warn">庫存偏低</span>';
+  if(activeOrders.length>0) return '<span class="pill pill-info">工單中</span>';
   if(p.weeksAvailable!==null&&p.weeksAvailable>=6) return '<span class="pill pill-ok">庫存充足</span>';
   return '<span class="pill pill-ok">正常</span>';
 }
@@ -591,7 +880,7 @@ function renderTable(){
     } else {
       if(!p.visible) return;
       if(currentFilter==='reorder'&&!p.needsReorder) return;
-      if(currentFilter==='wo'&&!p.workOrders.length) return;
+      if(currentFilter==='wo'&&!(p.workOrders||[]).some(o=>parseNumber(o.remaining)>0)) return;
       if(currentFilter==='low'&&(p.weeksAvailable===null||p.weeksAvailable>=2)) return;
     }
     if(currentSearch){
@@ -601,14 +890,16 @@ function renderTable(){
     const rowClass=getRowClass(p);
     const stockCls=p.currentStock<0?'num-neg':(p.currentStock<p.safetyStock?'num-low':'');
     const stockInput=`<input class="edit-num ${stockCls}" type="number" value="${p.currentStock}" id="stock-${p.code}" onchange="updateStock('${p.code}',this)" title="點擊編輯現有庫存">`;
-    let woHtml='—';
-    if(p.workOrders.length){
-      woHtml='<div class="wo-list">'+p.workOrders.map(o=>{
-        const d=new Date(o.deliveryDate);
-        const diff=Math.round((d-today)/86400000);
-        const lbl=diff<=0?'已到/逾':(diff===1?'明天':`${diff}天後`);
-        return `<div class="wo-item"><span class="wo-date">${o.deliveryDate}</span> +${o.remaining.toLocaleString()} <span style="opacity:.7">${lbl}</span></div>`;
-      }).join('')+'</div>';
+    let woHtml='';
+    const activeOrders = (p.workOrders||[]).filter(o=>parseNumber(o.remaining)>0);
+    if(activeOrders.length){
+        woHtml='<div class="wo-list">'+activeOrders.map(o=>{
+          const d=new Date(o.deliveryDate);
+          const diff=Math.round((d-today)/86400000);
+          const lbl=diff<=0?'已到/逾':(diff===1?'明天':`${diff}天後`);
+          const woLabel=o.woNum?`<span style="font-size:10px;opacity:.6;margin-right:4px">${o.woNum}</span>`:'';
+          return `<div class="wo-item">${woLabel}<span class="wo-date">${o.deliveryDate}</span> +${o.remaining.toLocaleString()} <span style="opacity:.7">${lbl}</span></div>`;
+        }).join('')+'</div>';
     }
     const refHtml=`<div class="ref-edit-row">
       <div class="ref-edit-col"><span class="m-lbl">4月</span><input type="number" value="${p.refMonths.apr}" id="ref-apr-${p.code}" onchange="updateRef('${p.code}','apr',this.value)" title="編輯4月參考銷量"></div>
@@ -621,7 +912,7 @@ function renderTable(){
       const daysLeft=Math.round((arrDate-today)/86400000);
       const urgency=daysLeft<=3?'緊急':(daysLeft<=7?'盡快':'計畫採購');
       const urgCls=daysLeft<=3?'ri-urg-high':(daysLeft<=7?'ri-urg-mid':'ri-urg-low');
-      const incoming=p.workOrders.reduce((s,o)=>s+o.remaining,0);
+      const incoming=p.workOrders.reduce((s,o)=>s+(o.remaining>0?o.remaining:0),0);
       const suggest=Math.max(0, Math.ceil(p.safetyStock - p.currentStock - incoming));
       reorderHtml=`<div class="reorder-info"><div class="ri-urgency ${urgCls}">${urgency}</div><div>建議到貨：<span class="ri-date">${p.suggestedArrival}</span></div><div class="ri-qty">建議採購：≥${suggest.toLocaleString()}件</div></div>`;
     } else if(p.needsReorder){
@@ -656,7 +947,7 @@ function updateStats(){
   document.getElementById('stat-reorder').textContent=vis.filter(p=>p.needsReorder).length;
   document.getElementById('stat-lowstock').textContent=vis.filter(p=>!p.needsReorder&&p.weeksAvailable!==null&&p.weeksAvailable<2).length;
   document.getElementById('stat-ok').textContent=vis.filter(p=>!p.needsReorder&&(p.weeksAvailable===null||p.weeksAvailable>=2)).length;
-  document.getElementById('stat-wo').textContent=vis.filter(p=>p.workOrders.length>0).length;
+  document.getElementById('stat-wo').textContent=vis.filter(p=>(p.workOrders||[]).some(o=>parseNumber(o.remaining)>0)).length;
   document.getElementById('stat-total').textContent=vis.length;
   const allBtn=document.querySelector('.filter-btn[data-filter="all"]');
   if(allBtn) allBtn.textContent=`全部 (${vis.length})`;
@@ -708,7 +999,7 @@ function updateSafetyWeeks(code,val){
   const w=Math.max(1,parseInt(val)||1);
   p.safetyWeeks=w;
   p.safetyStock=Math.round(p.weeklyAvg*w);
-  const inc=p.workOrders.reduce((s,o)=>s+o.remaining,0);
+  const inc=p.workOrders.reduce((s,o)=>s+(o.remaining>0?o.remaining:0),0);
   p.needsReorder=(p.currentStock+inc)<p.safetyStock;
   const today=getToday();
   if(p.needsReorder&&p.weeksAvailable!==null){
@@ -725,7 +1016,7 @@ function updateSafetyWeeks(code,val){
 function recalcFromStock(p){
   // Recalculate weeksAvailable, stockOutDate, needsReorder, suggestedArrival
   const today=getToday();
-  const inc=p.workOrders.reduce((s,o)=>s+o.remaining,0);
+  const inc=p.workOrders.reduce((s,o)=>s+(o.remaining>0?o.remaining:0),0);
   if(p.weeklyAvg>0){
     p.weeksAvailable=Math.round((p.currentStock/p.weeklyAvg)*10)/10;
     const outDate=new Date(today.getTime()+p.weeksAvailable*7*86400000);
@@ -1051,7 +1342,7 @@ function calcPO(){
   if(!code){res.classList.remove('show');return;}
   const p=products.find(x=>x.code===code);
   if(!p) return;
-  const inc=p.workOrders.reduce((s,o)=>s+o.remaining,0);
+  const inc=p.workOrders.reduce((s,o)=>s+(o.remaining>0?o.remaining:0),0);
   const target=Math.round(p.weeklyAvg*tw);
   const suggest=Math.max(0,target-(p.currentStock+inc));
   res.classList.add('show');
