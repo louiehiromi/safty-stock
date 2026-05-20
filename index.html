@@ -525,7 +525,7 @@ function getToday(){ return new Date(); }
 // ═══════════════════════════════════════════════
 const LS_KEYS = {inv:'inv_meta', wo:'wo_meta', sales:'sales_meta'};
 const INV_DATA_KEY = 'inv_parsed_data_v1';
-const WO_DATA_KEY = 'wo_parsed_data_v1';
+const WO_DATA_KEY = 'wo_parsed_data_v2';
 const SALES_DATA_KEY = 'sales_parsed_data_v1';
 const SLOT_CFG = {
   inv:{label:'現有庫存',hint:'_庫存_now_.xlsx'},
@@ -606,41 +606,68 @@ function normalizeDate(v){
   return `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
 }
 
+function findHeaderIndex(rows, label){
+  // 在前 10 列中尋找欄位名稱，支援合併標題列造成的上下兩層表頭
+  for(let r=0; r<Math.min(rows.length,10); r++){
+    const row = rows[r] || [];
+    for(let c=0; c<row.length; c++){
+      if(cleanText(row[c]).includes(label)) return c;
+    }
+  }
+  return -1;
+}
+
+function getCell(row, idx){
+  return idx >= 0 ? row[idx] : null;
+}
+
 function extractWorkOrders(rows){
   const ordersByCode = {};
   let lastDetail = null;
 
+  // 新版工單已有「品項編號」，但為避免欄位位置日後微調，先從表頭抓欄位位置。
+  // 若抓不到，才回到目前固定欄位：A工單、B品項編號、E交貨日、F需要數量、I已生產、J未生產。
+  const idxItemCode = findHeaderIndex(rows, '品項編號');
+  const idxDelivery = findHeaderIndex(rows, '交貨日');
+  const idxQty = findHeaderIndex(rows, '需要數量');
+  const idxProduced = findHeaderIndex(rows, '數量');
+  const idxRemaining = findHeaderIndex(rows, '未生產');
+
   function addOrder(code, detail){
+    code = cleanText(code).match(/P\d{5}/)?.[0] || '';
     if(!code || !detail) return;
+    const remaining = parseNumber(detail.remaining);
+    // 未生產為 0、空白、負數，都視為沒有未完成工單
+    if(remaining <= 0) return;
     if(!ordersByCode[code]) ordersByCode[code] = [];
-    ordersByCode[code].push({...detail});
+    ordersByCode[code].push({...detail, remaining});
   }
 
   rows.forEach(row=>{
+    row = row || [];
     const colA = cleanText(row[0]);
-    const colB = cleanText(row[1]);
 
-    // 明細列：A 欄是工單日期-號碼，例如 2026/05/12 -3
+    // 明細列：A 欄是工單日期-號碼，例如 2026/05/14 -4
     if(/^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}/.test(colA)){
-      const directCode = colB.match(/\b(P\d{5})\b/);
+      const codeSource = cleanText(getCell(row, idxItemCode >= 0 ? idxItemCode : 1));
+      const directCode = codeSource.match(/P\d{5}/);
 
       if(directCode){
-        // 新版工單格式：B 欄已新增品項編號
-        // A:工單號 B:品項編號 C:品項 D:客供商 E:交貨日 F:需要數量 G:工廠 H:生產日期 I:已生產數量 J:未生產 K:現庫存
-        addOrder(directCode[1], {
+        // 新版格式：直接用「品項編號」配對，不再靠品名或合計列。
+        addOrder(directCode[0], {
           woNum: normalizeWoNum(colA),
           itemName: cleanText(row[2]),
-          deliveryDate: normalizeDate(row[4]),
-          qty: parseNumber(row[5]),
-          produced: parseNumber(row[8]),
-          remaining: parseNumber(row[9])
+          deliveryDate: normalizeDate(getCell(row, idxDelivery >= 0 ? idxDelivery : 4)),
+          qty: parseNumber(getCell(row, idxQty >= 0 ? idxQty : 5)),
+          produced: parseNumber(getCell(row, 8)),
+          remaining: parseNumber(getCell(row, idxRemaining >= 0 ? idxRemaining : 9))
         });
         lastDetail = null;
       } else {
-        // 舊版工單格式：明細列沒有品項編號，要等下一列「Pxxxxx / 品名 合計」取得品項編號
+        // 舊版格式：明細列沒有品項編號，要等下一列「Pxxxxx / 品名 合計」取得品項編號。
         lastDetail = {
           woNum: normalizeWoNum(colA),
-          itemName: colB,
+          itemName: cleanText(row[1]),
           deliveryDate: normalizeDate(row[3]),
           qty: parseNumber(row[4]),
           produced: parseNumber(row[7]),
@@ -651,12 +678,13 @@ function extractWorkOrders(rows){
     }
 
     // 舊版工單格式的合計列，例如 P02016 / 極品超大無籽葡萄乾(袋)[統健] 合計
-    const summaryCode = colA.match(/\b(P\d{5})\b\s*\//);
+    const summaryCode = colA.match(/P\d{5}/);
     if(summaryCode && lastDetail){
-      addOrder(summaryCode[1], lastDetail);
+      addOrder(summaryCode[0], lastDetail);
       lastDetail = null;
     }
   });
+
   return ordersByCode;
 }
 
