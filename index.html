@@ -573,7 +573,7 @@ function getRowClass(p){
 }
 function getStatusPill(p){
   if(!p.visible) return '<span class="pill" style="opacity:.4">隱藏</span>';
-  if(p.needsReorder) return '<span class="pill pill-danger">⚠ 需採購</span>';
+  if(p.needsReorder) return '<span class="pill pill-danger">需採購</span>';
   if(p.weeksAvailable!==null&&p.weeksAvailable<2&&!p.workOrders.length) return '<span class="pill pill-warn">庫存偏低</span>';
   if(p.workOrders.length>0) return '<span class="pill pill-info">工單中</span>';
   if(p.weeksAvailable!==null&&p.weeksAvailable>=6) return '<span class="pill pill-ok">庫存充足</span>';
