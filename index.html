@@ -163,6 +163,10 @@ tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
 .reorder-info{font-size:11px;line-height:1.7}
 .reorder-info .ri-date{font-family:'DM Mono',monospace;font-weight:500;color:var(--danger);font-size:12px}
 .reorder-info .ri-qty{color:var(--text-sub)}
+.reorder-info .ri-urgency{font-weight:600;font-size:10.5px;letter-spacing:.04em}
+.ri-urg-high{color:var(--danger)}
+.ri-urg-mid{color:var(--warn)}
+.ri-urg-low{color:var(--text-sub)}
 
 /* Editable inline number cells */
 .edit-num {
@@ -249,8 +253,8 @@ tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
 
 <div class="app-header">
   <div class="app-logo">益原實業</div>
-  <button class="tab-btn active" onclick="showTab('inventory',this)">📦 安全庫存確認</button>
-  <button class="tab-btn" onclick="showTab('tools',this)">🔧 小工具</button>
+  <button class="tab-btn active" onclick="showTab('inventory',this)">安全庫存確認</button>
+  <button class="tab-btn" onclick="showTab('tools',this)">小工具</button>
 </div>
 
 <!-- ════ TAB 1 ════ -->
@@ -292,10 +296,10 @@ tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
   <div class="toolbar">
     <span class="toolbar-label">篩選</span>
     <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">全部</button>
-    <button class="filter-btn" data-filter="reorder" onclick="setFilter('reorder',this)">⚠ 需採購</button>
-    <button class="filter-btn" data-filter="wo" onclick="setFilter('wo',this)">📋 有工單</button>
-    <button class="filter-btn" data-filter="low" onclick="setFilter('low',this)">⬇ 低庫存</button>
-    <button class="filter-btn" data-filter="hidden" id="btn-hidden" onclick="setFilter('hidden',this)" style="display:none">🚫 已隱藏 <span id="hidden-count">0</span></button>
+    <button class="filter-btn" data-filter="reorder" onclick="setFilter('reorder',this)">需採購</button>
+    <button class="filter-btn" data-filter="wo" onclick="setFilter('wo',this)">有工單</button>
+    <button class="filter-btn" data-filter="low" onclick="setFilter('low',this)">低庫存</button>
+    <button class="filter-btn" data-filter="hidden" id="btn-hidden" onclick="setFilter('hidden',this)" style="display:none">已隱藏 <span id="hidden-count">0</span></button>
     <div class="toolbar-sep"></div>
     <input class="search-box" type="text" placeholder="搜尋品名或代號…" oninput="doSearch(this.value)">
     <div class="toolbar-right">
@@ -614,10 +618,11 @@ function renderTable(){
     if(p.needsReorder&&p.suggestedArrival){
       const arrDate=new Date(p.suggestedArrival);
       const daysLeft=Math.round((arrDate-today)/86400000);
-      const urgency=daysLeft<=3?'🔴 緊急':(daysLeft<=7?'🟡 盡快':'📋 計畫');
+      const urgency=daysLeft<=3?'緊急':(daysLeft<=7?'盡快':'計畫採購');
+      const urgCls=daysLeft<=3?'ri-urg-high':(daysLeft<=7?'ri-urg-mid':'ri-urg-low');
       const incoming=p.workOrders.reduce((s,o)=>s+o.remaining,0);
       const suggest=Math.max(0, Math.ceil(p.safetyStock - p.currentStock - incoming));
-      reorderHtml=`<div class="reorder-info"><div>${urgency}</div><div>建議到貨：<span class="ri-date">${p.suggestedArrival}</span></div><div class="ri-qty">建議採購：≥${suggest.toLocaleString()}件</div></div>`;
+      reorderHtml=`<div class="reorder-info"><div class="ri-urgency ${urgCls}">${urgency}</div><div>建議到貨：<span class="ri-date">${p.suggestedArrival}</span></div><div class="ri-qty">建議採購：≥${suggest.toLocaleString()}件</div></div>`;
     } else if(p.needsReorder){
       reorderHtml='<span class="pill pill-danger">需確認</span>';
     }
