@@ -21,7 +21,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5}
-
+ 
 /* ── Prevent whole-page scrolling: keep only table body scrollable ── */
 html, body{
   height:100%;
@@ -50,8 +50,8 @@ html, body{
   height:100vh;
   overflow:auto;
 }
-
-
+ 
+ 
 /* ── APP HEADER ── */
 .app-header{
   background:var(--surface);border-bottom:1px solid var(--border);
@@ -67,14 +67,14 @@ html, body{
   transition:color .15s,border-color .15s;white-space:nowrap;height:var(--hdr);display:flex;align-items:center}
 .tab-btn:hover{color:var(--accent)}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
-
+ 
 /* ── TAB CONTENT ── */
 .tab-content{display:none;padding-top:var(--hdr)}
 .tab-content.active{display:block}
-
+ 
 /* ── PAGE ── */
 .page{padding:20px 24px 60px;max-width:1700px}
-
+ 
 /* ── TOPBAR (upload + stats combined) ── */
 .topbar{
   display:flex;gap:10px;align-items:center;
@@ -96,7 +96,7 @@ html, body{
 .upload-slot.has-data{border-style:solid;border-color:var(--ok-border);background:var(--ok-bg)}
 .upload-slot.has-data .sl-title{color:var(--ok)}
 .upload-slot.has-data .sl-status{color:var(--text)}
-
+ 
 /* Stats inline */
 .topbar-stats{display:flex;align-items:stretch;gap:6px;margin-left:auto}
 .stat-chip{
@@ -109,7 +109,7 @@ html, body{
 .stat-danger .val{color:var(--danger)}
 .stat-warn .val{color:var(--warn)}
 .stat-ok .val{color:var(--ok)}
-
+ 
 /* ── TOOLBAR ── */
 .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;
   padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
@@ -123,7 +123,7 @@ html, body{
   padding:5px 10px;background:var(--bg);color:var(--text);width:155px;outline:none;transition:border-color .15s}
 .search-box:focus{border-color:var(--accent-light)}
 .toolbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-
+ 
 /* ── TABLE CONTAINER — THE KEY FIX ──
    Give the scroll wrapper a fixed height and overflow:auto.
    Since sticky is relative to scroll ancestor, thead th with top:0
@@ -138,7 +138,7 @@ html, body{
   -webkit-overflow-scrolling:touch;
 }
 table{width:100%;border-collapse:collapse;min-width:1180px}
-
+ 
 /* thead sticky — top:0 relative to .tbl-scroll scroll container */
 thead th{
   background:var(--surface2);padding:9px 10px;text-align:left;
@@ -148,15 +148,11 @@ thead th{
   /* recreate border since border-collapse hides it under sticky */
   box-shadow:0 1px 0 var(--border),inset 0 -1px 0 var(--border);
 }
-tbody tr{border-bottom:1px solid var(--border-light);transition:background .1s}
+tbody tr{border-bottom:1px solid var(--border-light)}
 tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:var(--surface2)}
 tbody tr.row-danger{background:var(--danger-bg)}
-tbody tr.row-danger:hover{background:#f5e8e6}
 tbody tr.row-warn{background:var(--warn-bg)}
-tbody tr.row-warn:hover{background:#f5ede0}
 tbody tr.row-ok{background:var(--surface)}
-tbody tr.row-ok:hover{background:var(--surface2)}
 tbody tr.row-hidden{opacity:.35}
 tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
 .cell-code{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-faint)}
@@ -164,41 +160,41 @@ tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
 .cell-name small{display:block;font-size:11px;color:var(--text-sub);font-weight:400}
 .cell-num{font-family:'DM Mono',monospace;text-align:right;white-space:nowrap}
 .num-neg{color:var(--danger)} .num-low{color:var(--warn)}
-
+ 
 .sw-input{width:44px;font-family:'DM Mono',monospace;font-size:12px;text-align:center;
   border:1px solid var(--border);border-radius:4px;padding:3px 4px;background:var(--bg);
   color:var(--text);outline:none;transition:border-color .15s}
 .sw-input:focus{border-color:var(--accent-light)}
-
+ 
 .pill{display:inline-block;font-size:10.5px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
 .pill-danger{background:var(--danger);color:#fff;border:1px solid var(--danger)}
 .pill-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-border)}
 .pill-ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border)}
 .pill-info{background:var(--info-bg);color:var(--info);border:1px solid var(--info-border)}
-
+ 
 .wo-list{display:flex;flex-direction:column;gap:3px}
 .wo-item{font-size:11px;padding:4px 10px;background:var(--info-bg);border:1px solid var(--info-border);
   border-radius:20px;white-space:nowrap;color:var(--info)}
 .wo-item .wo-date{font-family:'DM Mono',monospace;font-weight:500}
-
+ 
 .ref-months{display:flex;gap:6px}
 .ref-month{text-align:center;min-width:48px}
 .ref-month .m-lbl{font-size:10px;color:var(--text-faint);letter-spacing:.02em}
 .ref-month .m-val{font-family:'DM Mono',monospace;font-size:11.5px;font-weight:500}
-
+ 
 .vis-toggle{width:18px;height:18px;cursor:pointer;opacity:.5;transition:opacity .15s;
   background:none;border:none;padding:0;font-size:14px}
 .vis-toggle:hover{opacity:1}
-
+ 
 .reorder-cell{min-width:130px}
 .reorder-info{font-size:11px;line-height:1.7}
 .reorder-info .ri-date{font-family:'DM Mono',monospace;font-weight:500;color:var(--danger);font-size:12px}
 .reorder-info .ri-qty{color:var(--text-sub)}
 .reorder-info .ri-urgency{font-weight:600;font-size:10.5px;letter-spacing:.04em}
-.ri-urg-high{color:var(--danger)}
+.ri-urg-high{display:inline-block;background:var(--danger);color:#fff;border:1px solid var(--danger);border-radius:20px;padding:2px 8px;line-height:1.2}
 .ri-urg-mid{color:var(--warn)}
 .ri-urg-low{color:var(--text-sub)}
-
+ 
 /* Editable inline number cells */
 .edit-num {
   font-family:'DM Mono',monospace;font-size:12.5px;
@@ -221,8 +217,8 @@ tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
 .ref-edit-col input:hover{border-bottom-color:var(--accent-light);background:var(--surface2)}
 .ref-edit-col input:focus{border-bottom:1px solid var(--accent);background:var(--surface2)}
 .ref-edit-col input.m-may{font-weight:500;letter-spacing:.01em}
-
-
+ 
+ 
 /* Center align work order and reference sales columns */
 table#mainTable thead th:nth-child(8),
 table#mainTable thead th:nth-child(9){
@@ -238,7 +234,7 @@ table#mainTable tbody td:nth-child(9){
 #mainTable .ref-edit-row{
   justify-content:center;
 }
-
+ 
 /* ── TOOLS PAGE ── */
 .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px 24px 60px;max-width:1100px}
 .conv-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
@@ -251,7 +247,7 @@ table#mainTable tbody td:nth-child(9){
 .del-btn{font-family:inherit;font-size:11px;color:var(--text-faint);background:none;border:none;
   cursor:pointer;padding:2px 6px;border-radius:3px;transition:color .15s,background .15s}
 .del-btn:hover{color:var(--danger);background:var(--danger-bg)}
-
+ 
 /* Inline editable cells in conv table */
 .ct-cell-input{
   font-family:'DM Mono',monospace;font-size:12px;
@@ -298,17 +294,17 @@ table#mainTable tbody td:nth-child(9){
 </style>
 </head>
 <body>
-
+ 
 <div class="app-header">
   <div class="app-logo">益原實業</div>
   <button class="tab-btn active" onclick="showTab('inventory',this)">安全庫存確認</button>
   <button class="tab-btn" onclick="showTab('tools',this)">小工具</button>
 </div>
-
+ 
 <!-- ════ TAB 1 ════ -->
 <div id="tab-inventory" class="tab-content active">
 <div class="page">
-
+ 
   <!-- Topbar: uploads + stats combined -->
   <div class="topbar">
     <div class="topbar-uploads">
@@ -339,7 +335,7 @@ table#mainTable tbody td:nth-child(9){
       <div class="stat-chip"><div class="val" id="stat-total">—</div><div class="lbl">顯示品項</div></div>
     </div>
   </div>
-
+ 
   <!-- Toolbar -->
   <div class="toolbar">
     <span class="toolbar-label">篩選</span>
@@ -347,6 +343,7 @@ table#mainTable tbody td:nth-child(9){
     <button class="filter-btn" data-filter="reorder" onclick="setFilter('reorder',this)">需採購</button>
     <button class="filter-btn" data-filter="wo" onclick="setFilter('wo',this)">有工單</button>
     <button class="filter-btn" data-filter="low" onclick="setFilter('low',this)">低庫存</button>
+    <button class="filter-btn" data-filter="zero" onclick="setFilter('zero',this)">庫存為0</button>
     <button class="filter-btn" data-filter="hidden" id="btn-hidden" onclick="setFilter('hidden',this)" style="display:none">已隱藏 <span id="hidden-count">0</span></button>
     <div class="toolbar-sep"></div>
     <input class="search-box" type="text" placeholder="搜尋品名或代號…" oninput="doSearch(this.value)">
@@ -354,7 +351,7 @@ table#mainTable tbody td:nth-child(9){
       <button class="filter-btn" onclick="resetVisibility()">重設全部顯示</button>
     </div>
   </div>
-
+ 
   <!-- Table — outer just for border/radius, inner handles scroll -->
   <div class="tbl-outer">
     <div class="tbl-scroll" id="tblScroll">
@@ -378,14 +375,14 @@ table#mainTable tbody td:nth-child(9){
       </table>
     </div>
   </div>
-
+ 
 </div>
 </div>
-
+ 
 <!-- ════ TAB 2 ════ -->
 <div id="tab-tools" class="tab-content">
 <div class="tools-grid">
-
+ 
   <div class="tool-card">
     <h3>生產日 ↔ 到期日計算</h3>
     <div class="form-row">
@@ -409,7 +406,7 @@ table#mainTable tbody td:nth-child(9){
       <div class="r-row"><span class="r-label">距今剩餘</span><span class="r-val" id="ex-r-remain">—</span></div>
     </div>
   </div>
-
+ 
   <div class="tool-card">
     <h3>原料 ↔ 成品數量換算</h3>
     <div class="form-row">
@@ -433,7 +430,7 @@ table#mainTable tbody td:nth-child(9){
     <button class="calc-btn" onclick="calcConv()">換算</button>
     <div class="result-box" id="conv-result"></div>
   </div>
-
+ 
   <!-- Custom conversion table card -->
   <div class="tool-card" style="grid-column:1/-1">
     <h3>自訂原料換算表</h3>
@@ -471,7 +468,7 @@ table#mainTable tbody td:nth-child(9){
       <tbody id="ct-tbody"></tbody>
     </table>
   </div>
-
+ 
   <div class="tool-card">
     <h3>包裝成本估算</h3>
     <div class="form-row"><label>包裝量</label><input type="number" class="form-input" id="cost-qty" placeholder="包數" min="0" oninput="calcCost()"><span style="font-size:12px;color:var(--text-sub)">包</span></div>
@@ -486,7 +483,7 @@ table#mainTable tbody td:nth-child(9){
       <div class="r-row"><span class="r-label">每包成本</span><span class="r-val" id="cost-r-unit">—</span></div>
     </div>
   </div>
-
+ 
   <div class="tool-card">
     <h3>採購量試算</h3>
     <p style="font-size:11.5px;color:var(--text-sub);margin-bottom:12px">扣除在途庫存後，計算達到目標週數所需採購量</p>
@@ -500,26 +497,26 @@ table#mainTable tbody td:nth-child(9){
       <div class="r-row"><span class="r-label" style="font-weight:600">建議採購</span><span class="r-val" id="po-r-suggest" style="font-size:16px">—</span></div>
     </div>
   </div>
-
+ 
 </div>
 </div>
-
+ 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════
 //  BUILT-IN DATA (2026-05-20)
 // ═══════════════════════════════════════════════
 const BUILTIN = {"products":[{"code":"P01001","shortName":"植奶(罐)","fullName":"生機高鈣植物奶(罐)","currentStock":1399,"weeklyAvg":86.8,"annualWeeklyAvg":96.8,"safetyWeeks":6,"safetyStock":521,"weeksAvailable":16.1,"stockOutDate":"2026-09-09","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":508,"may":347,"jun":515},"annual2025":5034},{"code":"P01002","shortName":"植奶(盒)","fullName":"(盒)生機高鈣植物奶","currentStock":1159,"weeklyAvg":95.2,"annualWeeklyAvg":97.6,"safetyWeeks":6,"safetyStock":571,"weeksAvailable":12.2,"stockOutDate":"2026-08-13","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":698,"may":381,"jun":368},"annual2025":5073},{"code":"P01003","shortName":"松子杏仁","fullName":"百穀精華之松子杏仁(盒)","currentStock":1090,"weeklyAvg":367.5,"annualWeeklyAvg":693.5,"safetyWeeks":4,"safetyStock":1470,"weeksAvailable":3.0,"stockOutDate":"2026-06-10","workOrders":[{"woNum":"2026/05/14-4","deliveryDate":"2026-06-02","qty":2400,"remaining":2400}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":4095,"may":1470,"jun":1073},"annual2025":36062},{"code":"P01006","shortName":"多榖奶","fullName":"多穀奶(罐)","currentStock":664,"weeklyAvg":69.8,"annualWeeklyAvg":74.4,"safetyWeeks":4,"safetyStock":279,"weeksAvailable":9.5,"stockOutDate":"2026-07-25","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":369,"may":279,"jun":197},"annual2025":3868},{"code":"P01009","shortName":"豐活","fullName":"豐活燕麥穀物奶","currentStock":315,"weeklyAvg":74.2,"annualWeeklyAvg":35.3,"safetyWeeks":5,"safetyStock":371,"weeksAvailable":4.2,"stockOutDate":"2026-06-18","workOrders":[{"woNum":"2026/05/12-2","deliveryDate":"2026-06-16","qty":900,"remaining":900}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":294,"may":297,"jun":294},"annual2025":1836},{"code":"P01004","shortName":"杏仁粉","fullName":"百榖精華之杏仁粉(罐)","currentStock":613,"weeklyAvg":80.2,"annualWeeklyAvg":66.4,"safetyWeeks":5,"safetyStock":401,"weeksAvailable":7.6,"stockOutDate":"2026-07-12","workOrders":[{"woNum":"2026/04/20-6","deliveryDate":"2026-05-18","qty":600,"remaining":600}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":253,"may":321,"jun":308},"annual2025":3451},{"code":"P01005","shortName":"黑芝麻","fullName":"百榖精華之黑芝麻粉(罐)","currentStock":210,"weeklyAvg":73.0,"annualWeeklyAvg":51.7,"safetyWeeks":3,"safetyStock":219,"weeksAvailable":2.9,"stockOutDate":"2026-06-09","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-06-02","refMonths":{"apr":148,"may":292,"jun":258},"annual2025":2686},{"code":"P01011","shortName":"蓮藕粉","fullName":"蓮藕粉","currentStock":212,"weeklyAvg":37.5,"annualWeeklyAvg":14.4,"safetyWeeks":3,"safetyStock":112,"weeksAvailable":5.7,"stockOutDate":"2026-06-28","workOrders":[{"woNum":"2026/04/28-2","deliveryDate":"2026-06-02","qty":350,"remaining":350}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":150,"may":150,"jun":150},"annual2025":0},{"code":"P02005","shortName":"蔓(罐)","fullName":"生機蔓越莓(罐)","currentStock":144,"weeklyAvg":76.2,"annualWeeklyAvg":63.8,"safetyWeeks":3,"safetyStock":229,"weeksAvailable":1.9,"stockOutDate":"2026-06-02","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-26","refMonths":{"apr":320,"may":305,"jun":67},"annual2025":3319},{"code":"P02006","shortName":"堅果(罐)","fullName":"生機綜合堅果(罐)","currentStock":827,"weeklyAvg":49.5,"annualWeeklyAvg":48.3,"safetyWeeks":3,"safetyStock":148,"weeksAvailable":16.7,"stockOutDate":"2026-09-13","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":183,"may":198,"jun":78},"annual2025":2511},{"code":"P02004","shortName":"無300罐","fullName":"超大無籽葡萄乾300g(罐)","currentStock":-363,"weeklyAvg":73.2,"annualWeeklyAvg":139.2,"safetyWeeks":3,"safetyStock":220,"weeksAvailable":-5.0,"stockOutDate":"2026-04-15","workOrders":[{"woNum":"2026/05/06-1","deliveryDate":"2026-05-13","qty":333,"remaining":333}],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":537,"may":293,"jun":184},"annual2025":7236},{"code":"P02010","shortName":"蜜棗(罐)","fullName":"生機蜜棗乾(罐)","currentStock":0,"weeklyAvg":2.6,"annualWeeklyAvg":2.6,"safetyWeeks":3,"safetyStock":8,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":54,"may":0,"jun":0},"annual2025":135},{"code":"P02007","shortName":"堅果(袋)","fullName":"生機綜合堅果(袋)","currentStock":2318,"weeklyAvg":854.2,"annualWeeklyAvg":560.1,"safetyWeeks":3,"safetyStock":2563,"weeksAvailable":2.7,"stockOutDate":"2026-06-07","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-31","refMonths":{"apr":2255,"may":3417,"jun":3127},"annual2025":29124},{"code":"P02028","shortName":"五享(袋)","fullName":"五享堅果(袋)","currentStock":121,"weeklyAvg":17.0,"annualWeeklyAvg":9.8,"safetyWeeks":3,"safetyStock":51,"weeksAvailable":7.1,"stockOutDate":"2026-07-08","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":27,"may":68,"jun":26},"annual2025":512},{"code":"P02002","shortName":"無200","fullName":"超大無籽葡萄乾200g(袋)","currentStock":1508,"weeklyAvg":999.0,"annualWeeklyAvg":952.5,"safetyWeeks":3,"safetyStock":2997,"weeksAvailable":1.5,"stockOutDate":"2026-05-30","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-23","refMonths":{"apr":3740,"may":3996,"jun":4301},"annual2025":49532},{"code":"P02016","shortName":"無240","fullName":"極品超大無籽葡萄乾(袋)","currentStock":2768,"weeklyAvg":976.0,"annualWeeklyAvg":720.1,"safetyWeeks":3,"safetyStock":2928,"weeksAvailable":2.8,"stockOutDate":"2026-06-08","workOrders":[{"woNum":"2026/05/12-3","deliveryDate":"2026-05-22","qty":960,"remaining":960}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":3487,"may":3904,"jun":2304},"annual2025":37444},{"code":"P02003","shortName":"有200","fullName":"超大有籽葡萄乾200g(袋)","currentStock":498,"weeklyAvg":278.8,"annualWeeklyAvg":225.9,"safetyWeeks":2,"safetyStock":558,"weeksAvailable":1.8,"stockOutDate":"2026-06-01","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-25","refMonths":{"apr":652,"may":1115,"jun":933},"annual2025":11747},{"code":"P02011","shortName":"蜜棗(袋)","fullName":"生機蜜棗乾(袋)","currentStock":-78,"weeklyAvg":366.5,"annualWeeklyAvg":317.0,"safetyWeeks":3,"safetyStock":1100,"weeksAvailable":-0.2,"stockOutDate":"2026-05-18","workOrders":[{"woNum":"2026/05/11-2","deliveryDate":"2026-05-21","qty":2225,"remaining":2225}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":1081,"may":1466,"jun":184},"annual2025":16485},{"code":"P02008","shortName":"蔓整(袋)","fullName":"蔓越莓(整粒)(袋)","currentStock":1335,"weeklyAvg":491.5,"annualWeeklyAvg":575.9,"safetyWeeks":2,"safetyStock":983,"weeksAvailable":2.7,"stockOutDate":"2026-06-07","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":3017,"may":1966,"jun":2627},"annual2025":29947},{"code":"P02001","shortName":"蔓半(袋)","fullName":"蔓越莓(剖半)(袋)","currentStock":85,"weeklyAvg":201.0,"annualWeeklyAvg":179.0,"safetyWeeks":2,"safetyStock":402,"weeksAvailable":0.4,"stockOutDate":"2026-05-22","workOrders":[{"woNum":"2026/05/14-1","deliveryDate":"2026-05-22","qty":680,"remaining":680}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":410,"may":804,"jun":499},"annual2025":9307},{"code":"P02009","shortName":"酸櫻桃","fullName":"生機酸櫻桃乾(包)","currentStock":-128,"weeklyAvg":105.5,"annualWeeklyAvg":90.4,"safetyWeeks":2,"safetyStock":211,"weeksAvailable":-1.2,"stockOutDate":"2026-05-11","workOrders":[{"woNum":"2026/05/14-3","deliveryDate":"2026-05-21","qty":340,"remaining":340}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":182,"may":422,"jun":330},"annual2025":4699},{"code":"P02013","shortName":"藍莓","fullName":"生機野生藍莓乾","currentStock":-211,"weeklyAvg":293.0,"annualWeeklyAvg":266.6,"safetyWeeks":2,"safetyStock":586,"weeksAvailable":-0.7,"stockOutDate":"2026-05-15","workOrders":[{"woNum":"2026/05/11-3","deliveryDate":"2026-05-21","qty":1200,"remaining":1200}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":1255,"may":1172,"jun":1473},"annual2025":13865},{"code":"P02020","shortName":"椰棗","fullName":"(去籽)生機椰棗乾","currentStock":288,"weeklyAvg":225.0,"annualWeeklyAvg":164.5,"safetyWeeks":4,"safetyStock":900,"weeksAvailable":1.3,"stockOutDate":"2026-05-29","workOrders":[{"woNum":"2026/05/04-3","deliveryDate":"2026-05-11","qty":94,"remaining":94}],"needsReorder":true,"suggestedArrival":"2026-05-22","refMonths":{"apr":669,"may":900,"jun":953},"annual2025":8556},{"code":"P02021","shortName":"巴西堅果","fullName":"巴西堅果","currentStock":0,"weeklyAvg":58.0,"annualWeeklyAvg":114.7,"safetyWeeks":3,"safetyStock":174,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":104,"may":232,"jun":299},"annual2025":5966},{"code":"P02012","shortName":"松子","fullName":"生機松子(袋)","currentStock":435,"weeklyAvg":74.5,"annualWeeklyAvg":157.6,"safetyWeeks":3,"safetyStock":224,"weeksAvailable":5.8,"stockOutDate":"2026-06-29","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":303,"may":298,"jun":427},"annual2025":8193},{"code":"P03001","shortName":"梅子果凍","fullName":"生機梅子蒟蒻果凍","currentStock":479,"weeklyAvg":1636.8,"annualWeeklyAvg":673.3,"safetyWeeks":6,"safetyStock":9821,"weeksAvailable":0.3,"stockOutDate":"2026-05-22","workOrders":[{"woNum":"2026/03/23-2","deliveryDate":"2026-05-21","qty":2400,"remaining":2400},{"woNum":"2026/04/09-2","deliveryDate":"2026-06-11","qty":2400,"remaining":2400}],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":3927,"may":6547,"jun":1265},"annual2025":35010},{"code":"P04003","shortName":"紅薏仁","fullName":"台灣紅薏仁","currentStock":75,"weeklyAvg":62.5,"annualWeeklyAvg":62.5,"safetyWeeks":3,"safetyStock":188,"weeksAvailable":1.2,"stockOutDate":"2026-05-28","workOrders":[{"woNum":"2026/05/05-1","deliveryDate":"2026-05-19","qty":600,"remaining":600}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":185,"may":250,"jun":250},"annual2025":3251},{"code":"P04008","shortName":"黑米","fullName":"濁水溪黑米1kg","currentStock":114,"weeklyAvg":37.2,"annualWeeklyAvg":32.9,"safetyWeeks":2,"safetyStock":74,"weeksAvailable":3.1,"stockOutDate":"2026-06-10","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":115,"may":149,"jun":96},"annual2025":1713},{"code":"P04016","shortName":"小米","fullName":"有機小米","currentStock":51,"weeklyAvg":5.0,"annualWeeklyAvg":0.1,"safetyWeeks":3,"safetyStock":15,"weeksAvailable":10.2,"stockOutDate":"2026-07-30","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":20,"may":20,"jun":20},"annual2025":6},{"code":"P04010","shortName":"一匙鮮-甜","fullName":"一匙鮮竹鹽蔬果粉-甜菜根","currentStock":87,"weeklyAvg":116.0,"annualWeeklyAvg":98.4,"safetyWeeks":2,"safetyStock":232,"weeksAvailable":0.8,"stockOutDate":"2026-05-25","workOrders":[{"woNum":"2026/05/14-2","deliveryDate":"2026-05-26","qty":360,"remaining":360}],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":427,"may":464,"jun":374},"annual2025":5117},{"code":"P04011","shortName":"一匙鮮-牛","fullName":"一匙鮮竹鹽蔬果粉-牛蒡","currentStock":1205,"weeklyAvg":200.0,"annualWeeklyAvg":212.3,"safetyWeeks":2,"safetyStock":400,"weeksAvailable":6.0,"stockOutDate":"2026-07-01","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":785,"may":800,"jun":800},"annual2025":11042},{"code":"P04012","shortName":"一匙鮮-綠","fullName":"一匙鮮竹鹽蔬果粉-綠色蔬菜","currentStock":1204,"weeklyAvg":450.0,"annualWeeklyAvg":485.8,"safetyWeeks":2,"safetyStock":900,"weeksAvailable":2.7,"stockOutDate":"2026-06-07","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":2010,"may":1800,"jun":1399},"annual2025":25264},{"code":"P03007","shortName":"藜麥海苔","fullName":"藜麥海苔脆片","currentStock":1334,"weeklyAvg":57.0,"annualWeeklyAvg":52.2,"safetyWeeks":2,"safetyStock":114,"weeksAvailable":23.4,"stockOutDate":"2026-10-30","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":242,"may":228,"jun":195},"annual2025":2715},{"code":"P03011","shortName":"巧酥派","fullName":"杏仁芝麻巧酥派","currentStock":0,"weeklyAvg":33.0,"annualWeeklyAvg":26.2,"safetyWeeks":3,"safetyStock":99,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":247,"may":132,"jun":84},"annual2025":1365},{"code":"P03012","shortName":"迷你派","fullName":"可可燕麥迷你派","currentStock":567,"weeklyAvg":15.2,"annualWeeklyAvg":19.7,"safetyWeeks":3,"safetyStock":46,"weeksAvailable":37.3,"stockOutDate":"2027-02-05","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":51,"may":61,"jun":34},"annual2025":1024},{"code":"P04001","shortName":"玄米油","fullName":"玄米油","currentStock":2165,"weeklyAvg":264.0,"annualWeeklyAvg":156.5,"safetyWeeks":20,"safetyStock":5280,"weeksAvailable":8.2,"stockOutDate":"2026-07-16","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-07-09","refMonths":{"apr":599,"may":1056,"jun":1015},"annual2025":8138},{"code":"P04017","shortName":"紫蘇油","fullName":"紫蘇油","currentStock":408,"weeklyAvg":25.0,"annualWeeklyAvg":13.5,"safetyWeeks":3,"safetyStock":75,"weeksAvailable":16.3,"stockOutDate":"2026-09-11","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":100,"may":100,"jun":100},"annual2025":0},{"code":"P03002","shortName":"72%咖","fullName":"咖啡豆72%黑巧克力(包)","currentStock":0,"weeklyAvg":15.4,"annualWeeklyAvg":15.4,"safetyWeeks":4,"safetyStock":62,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":-11},"annual2025":800},{"code":"P03003","shortName":"72%葡","fullName":"葡萄乾72%黑巧克力(包)","currentStock":0,"weeklyAvg":92.4,"annualWeeklyAvg":92.4,"safetyWeeks":4,"safetyStock":370,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":4804},{"code":"P03004","shortName":"72%杏","fullName":"杏仁72%黑巧克力(包)","currentStock":0,"weeklyAvg":95.1,"annualWeeklyAvg":95.1,"safetyWeeks":4,"safetyStock":380,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":42,"may":0,"jun":-7},"annual2025":4946},{"code":"P03005","shortName":"72%金","fullName":"金幣72%黑巧克力(包)","currentStock":27,"weeklyAvg":66.4,"annualWeeklyAvg":66.4,"safetyWeeks":4,"safetyStock":266,"weeksAvailable":0.4,"stockOutDate":"2026-05-22","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":3455},{"code":"P03006","shortName":"72%米","fullName":"黑米菓72%黑巧克力(袋)","currentStock":0,"weeklyAvg":9.4,"annualWeeklyAvg":9.4,"safetyWeeks":4,"safetyStock":38,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":-8},"annual2025":491},{"code":"P03013","shortName":"72%夏","fullName":"夏威夷豆72%黑巧克力","currentStock":0,"weeklyAvg":155.6,"annualWeeklyAvg":155.6,"safetyWeeks":4,"safetyStock":622,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":8092},{"code":"P02022","shortName":"櫻桃罐","fullName":"酸櫻桃乾(罐)","currentStock":0,"weeklyAvg":3.6,"annualWeeklyAvg":3.6,"safetyWeeks":3,"safetyStock":11,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":0,"jun":0},"annual2025":188},{"code":"P02023","shortName":"四寶","fullName":"養生四寶堅果(罐)","currentStock":0,"weeklyAvg":0.2,"annualWeeklyAvg":8.3,"safetyWeeks":3,"safetyStock":1,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":0,"may":1,"jun":10},"annual2025":432},{"code":"P02029","shortName":"五享(罐)","fullName":"五享堅果(罐)","currentStock":150,"weeklyAvg":0.4,"annualWeeklyAvg":0.4,"safetyWeeks":3,"safetyStock":1,"weeksAvailable":375.0,"stockOutDate":"2033-07-27","workOrders":[],"needsReorder":false,"suggestedArrival":null,"refMonths":{"apr":0,"may":0,"jun":0},"annual2025":21},{"code":"P04014","shortName":"多穀粥","fullName":"一碗鮮多穀粥 - 蔬菜","currentStock":0,"weeklyAvg":7.0,"annualWeeklyAvg":12.9,"safetyWeeks":2,"safetyStock":14,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":12,"may":28,"jun":3},"annual2025":672},{"code":"P03014","shortName":"莓果派","fullName":"蘋果覆盆莓迷你派","currentStock":0,"weeklyAvg":17.8,"annualWeeklyAvg":17.8,"safetyWeeks":3,"safetyStock":53,"weeksAvailable":0.0,"stockOutDate":"2026-05-20","workOrders":[],"needsReorder":true,"suggestedArrival":"2026-05-20","refMonths":{"apr":51,"may":71,"jun":50},"annual2025":928}],"invUploadTime":"2026/05/20  9:45:14","woUploadTime":"2026/05/19  12:51:44"};
-
+ 
 // ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
 let products = BUILTIN.products.map(p=>({...p, workOrders:[...(p.workOrders||[])], refMonths:{...(p.refMonths||{})}, visible:true}));
 let currentFilter='all', currentSearch='';
-
+ 
 // Single source of truth for "today" — use real date
 function getToday(){ return new Date(); }
-
+ 
 // ═══════════════════════════════════════════════
 //  UPLOAD (localStorage memory)
 // ═══════════════════════════════════════════════
@@ -532,11 +529,11 @@ const SLOT_CFG = {
   wo:{label:'生產工單',hint:'生產工單進行狀況.xlsx'},
   sales:{label:'年度銷售',hint:'品項年銷統計.xlsx'}
 };
-
+ 
 function triggerUpload(type){
   // Let the file input handle it natively (it overlaps the slot via position:absolute)
 }
-
+ 
 function handleUpload(type, input){
   const file = input.files[0];
   if(!file) return;
@@ -545,7 +542,7 @@ function handleUpload(type, input){
   const meta = {name:file.name, time:ts};
   try{ localStorage.setItem(LS_KEYS[type], JSON.stringify(meta)); }catch(e){}
   updateSlotUI(type, meta);
-
+ 
   if(type === 'wo'){
     parseWorkOrderFile(file, meta);
   } else if(type === 'inv'){
@@ -554,7 +551,7 @@ function handleUpload(type, input){
     parseAnnualSalesFile(file, meta);
   }
 }
-
+ 
 function parseWorkOrderFile(file, meta){
   if(typeof XLSX === 'undefined'){
     showToast('無法讀取 Excel：SheetJS 載入失敗，請確認網路連線後重新開啟此檔案');
@@ -582,21 +579,21 @@ function parseWorkOrderFile(file, meta){
   reader.onerror = function(){ showToast('讀取檔案失敗，請重新上傳一次'); };
   reader.readAsArrayBuffer(file);
 }
-
+ 
 function cleanText(v){
   return (v===null || v===undefined) ? '' : String(v).replace(/\s+/g,' ').trim();
 }
-
+ 
 function parseNumber(v){
   if(v===null || v===undefined || v==='') return 0;
   const n = Number(String(v).replace(/,/g,'').trim());
   return isNaN(n) ? 0 : n;
 }
-
+ 
 function normalizeWoNum(v){
   return cleanText(v).replace(/\s*-\s*/g,'-');
 }
-
+ 
 function normalizeDate(v){
   if(!v) return '';
   if(v instanceof Date && !isNaN(v)) return v.toISOString().slice(0,10);
@@ -605,7 +602,7 @@ function normalizeDate(v){
   if(!m) return str;
   return `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
 }
-
+ 
 function findHeaderIndex(rows, label){
   // 在前 10 列中尋找欄位名稱，支援合併標題列造成的上下兩層表頭
   for(let r=0; r<Math.min(rows.length,10); r++){
@@ -616,15 +613,15 @@ function findHeaderIndex(rows, label){
   }
   return -1;
 }
-
+ 
 function getCell(row, idx){
   return idx >= 0 ? row[idx] : null;
 }
-
+ 
 function extractWorkOrders(rows){
   const ordersByCode = {};
   let lastDetail = null;
-
+ 
   // 新版工單已有「品項編號」，但為避免欄位位置日後微調，先從表頭抓欄位位置。
   // 若抓不到，才回到目前固定欄位：A工單、B品項編號、E交貨日、F需要數量、I已生產、J未生產。
   const idxItemCode = findHeaderIndex(rows, '品項編號');
@@ -632,7 +629,7 @@ function extractWorkOrders(rows){
   const idxQty = findHeaderIndex(rows, '需要數量');
   const idxProduced = findHeaderIndex(rows, '數量');
   const idxRemaining = findHeaderIndex(rows, '未生產');
-
+ 
   function addOrder(code, detail){
     code = cleanText(code).match(/P\d{5}/)?.[0] || '';
     if(!code || !detail) return;
@@ -642,16 +639,16 @@ function extractWorkOrders(rows){
     if(!ordersByCode[code]) ordersByCode[code] = [];
     ordersByCode[code].push({...detail, remaining});
   }
-
+ 
   rows.forEach(row=>{
     row = row || [];
     const colA = cleanText(row[0]);
-
+ 
     // 明細列：A 欄是工單日期-號碼，例如 2026/05/14 -4
     if(/^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}/.test(colA)){
       const codeSource = cleanText(getCell(row, idxItemCode >= 0 ? idxItemCode : 1));
       const directCode = codeSource.match(/P\d{5}/);
-
+ 
       if(directCode){
         // 新版格式：直接用「品項編號」配對，不再靠品名或合計列。
         addOrder(directCode[0], {
@@ -676,7 +673,7 @@ function extractWorkOrders(rows){
       }
       return;
     }
-
+ 
     // 舊版工單格式的合計列，例如 P02016 / 極品超大無籽葡萄乾(袋)[統健] 合計
     const summaryCode = colA.match(/P\d{5}/);
     if(summaryCode && lastDetail){
@@ -684,10 +681,10 @@ function extractWorkOrders(rows){
       lastDetail = null;
     }
   });
-
+ 
   return ordersByCode;
 }
-
+ 
 function applyWorkOrders(ordersByCode){
   const knownCodes = new Set(products.map(p=>p.code));
   let updated = 0, active = 0, ignored = 0;
@@ -708,7 +705,7 @@ function applyWorkOrders(ordersByCode){
   Object.keys(ordersByCode).forEach(code=>{ if(!knownCodes.has(code)) ignored++; });
   return {updated, active, ignored};
 }
-
+ 
 function loadStoredWorkOrders(){
   try{
     const raw = localStorage.getItem(WO_DATA_KEY);
@@ -717,8 +714,8 @@ function loadStoredWorkOrders(){
     if(saved && saved.ordersByCode) applyWorkOrders(saved.ordersByCode);
   }catch(e){}
 }
-
-
+ 
+ 
 function refreshAfterDataUpdate(){
   renderTable();
   updateStats();
@@ -726,7 +723,7 @@ function refreshAfterDataUpdate(){
   const poResult = document.getElementById('po-result');
   if(poResult && poResult.classList.contains('show')) calcPO();
 }
-
+ 
 function parseInventoryFile(file, meta){
   if(typeof XLSX === 'undefined'){
     showToast('無法讀取 Excel：SheetJS 載入失敗，請確認網路連線後重新開啟此檔案');
@@ -752,7 +749,7 @@ function parseInventoryFile(file, meta){
   reader.onerror = function(){ showToast('讀取檔案失敗，請重新上傳一次'); };
   reader.readAsArrayBuffer(file);
 }
-
+ 
 function extractInventory(rows){
   const stockByCode = {};
   rows.forEach(row=>{
@@ -763,7 +760,7 @@ function extractInventory(rows){
   });
   return stockByCode;
 }
-
+ 
 function applyInventory(stockByCode){
   const knownCodes = new Set(products.map(p=>p.code));
   let updated = 0, ignored = 0;
@@ -777,7 +774,7 @@ function applyInventory(stockByCode){
   Object.keys(stockByCode).forEach(code=>{ if(!knownCodes.has(code)) ignored++; });
   return {updated, ignored};
 }
-
+ 
 function loadStoredInventory(){
   try{
     const raw = localStorage.getItem(INV_DATA_KEY);
@@ -786,7 +783,7 @@ function loadStoredInventory(){
     if(saved && saved.stockByCode) applyInventory(saved.stockByCode);
   }catch(e){}
 }
-
+ 
 function parseAnnualSalesFile(file, meta){
   if(typeof XLSX === 'undefined'){
     showToast('無法讀取 Excel：SheetJS 載入失敗，請確認網路連線後重新開啟此檔案');
@@ -812,7 +809,7 @@ function parseAnnualSalesFile(file, meta){
   reader.onerror = function(){ showToast('讀取檔案失敗，請重新上傳一次'); };
   reader.readAsArrayBuffer(file);
 }
-
+ 
 function extractAnnualSales(rows){
   const salesByCode = {};
   rows.forEach(row=>{
@@ -823,7 +820,7 @@ function extractAnnualSales(rows){
   });
   return salesByCode;
 }
-
+ 
 function applyAnnualSales(salesByCode){
   const knownCodes = new Set(products.map(p=>p.code));
   let updated = 0, ignored = 0;
@@ -844,7 +841,7 @@ function applyAnnualSales(salesByCode){
   Object.keys(salesByCode).forEach(code=>{ if(!knownCodes.has(code)) ignored++; });
   return {updated, ignored};
 }
-
+ 
 function loadStoredAnnualSales(){
   try{
     const raw = localStorage.getItem(SALES_DATA_KEY);
@@ -853,7 +850,7 @@ function loadStoredAnnualSales(){
     if(saved && saved.salesByCode) applyAnnualSales(saved.salesByCode);
   }catch(e){}
 }
-
+ 
 function updateSlotUI(type, meta){
   const slot = document.getElementById('slot-'+type);
   const status = document.getElementById(type+'-status');
@@ -868,7 +865,7 @@ function updateSlotUI(type, meta){
     time.textContent = '—';
   }
 }
-
+ 
 function loadUploadMeta(){
   ['inv','wo','sales'].forEach(type=>{
     try{
@@ -877,7 +874,7 @@ function loadUploadMeta(){
     }catch(e){}
   });
 }
-
+ 
 function showToast(msg){
   let t = document.getElementById('toast');
   if(!t){
@@ -896,7 +893,7 @@ function showToast(msg){
   clearTimeout(t._timer);
   t._timer=setTimeout(()=>t.style.opacity='0',3500);
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
@@ -910,7 +907,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   populatePOSelect();
   loadCustomRates(); // already calls renderConvSelect internally
 });
-
+ 
 // ═══════════════════════════════════════════════
 //  TAB
 // ═══════════════════════════════════════════════
@@ -920,7 +917,7 @@ function showTab(id,btn){
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  TABLE
 // ═══════════════════════════════════════════════
@@ -940,7 +937,7 @@ function getStatusPill(p){
   if(p.weeksAvailable!==null&&p.weeksAvailable>=6) return '<span class="pill pill-ok">庫存充足</span>';
   return '<span class="pill pill-ok">正常</span>';
 }
-
+ 
 function renderTable(){
   const tbody=document.getElementById('tableBody');
   let html='';
@@ -953,6 +950,7 @@ function renderTable(){
       if(currentFilter==='reorder'&&!p.needsReorder) return;
       if(currentFilter==='wo'&&!(p.workOrders||[]).some(o=>parseNumber(o.remaining)>0)) return;
       if(currentFilter==='low'&&(p.weeksAvailable===null||p.weeksAvailable>=2)) return;
+      if(currentFilter==='zero'&&parseNumber(p.currentStock)!==0) return;
     }
     if(currentSearch){
       const q=currentSearch.toLowerCase();
@@ -990,10 +988,17 @@ function renderTable(){
     }
     let sod='—';
     if(p.stockOutDate){
-      const d=new Date(p.stockOutDate);
-      const diff=Math.round((d-today)/86400000);
       sod=`<div style="font-family:'DM Mono',monospace;font-size:12px">${p.stockOutDate}</div>`;
-      if(diff<=14) sod+=`<div style="font-size:10.5px;color:var(--danger)">${diff<=0?'已售罄':diff+'天後'}</div>`;
+      if(p.currentStock < p.safetyStock){
+        if(p.currentStock <= 0){
+          sod+=`<div style="font-size:10.5px;color:var(--danger)">已售罄</div>`;
+        } else if(p.weeklyAvg > 0){
+          const sellableDays=Math.max(0, Math.ceil((p.currentStock / p.weeklyAvg) * 7));
+          sod+=`<div style="font-size:10.5px;color:var(--danger)">還可賣${sellableDays}天</div>`;
+        } else {
+          sod+=`<div style="font-size:10.5px;color:var(--danger)">低於安全庫存</div>`;
+        }
+      }
     }
     html+=`<tr class="${rowClass}" id="row-${p.code}">
       <td><button class="vis-toggle" onclick="toggleVis('${p.code}')" title="${p.visible?'點擊隱藏此品項':'點擊恢復顯示'}">${p.visible?'👁':'↩'}</button></td>
@@ -1011,7 +1016,7 @@ function renderTable(){
   });
   tbody.innerHTML=html||'<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--text-faint)">沒有符合條件的品項</td></tr>';
 }
-
+ 
 function updateStats(){
   const vis=products.filter(p=>p.visible);
   document.getElementById('stat-reorder').textContent=vis.filter(p=>p.needsReorder).length;
@@ -1021,8 +1026,10 @@ function updateStats(){
   document.getElementById('stat-total').textContent=vis.length;
   const allBtn=document.querySelector('.filter-btn[data-filter="all"]');
   if(allBtn) allBtn.textContent=`全部 (${vis.length})`;
+  const zeroBtn=document.querySelector('.filter-btn[data-filter="zero"]');
+  if(zeroBtn) zeroBtn.textContent=`庫存為0 (${vis.filter(p=>parseNumber(p.currentStock)===0).length})`;
 }
-
+ 
 function setFilter(f,btn){
   currentFilter=f;
   document.querySelectorAll('.filter-btn[data-filter]').forEach(b=>b.classList.remove('active'));
@@ -1030,7 +1037,7 @@ function setFilter(f,btn){
   renderTable();
 }
 function doSearch(v){currentSearch=v.trim();renderTable();}
-
+ 
 function toggleVis(code){
   const p=products.find(x=>x.code===code);
   if(!p) return;
@@ -1082,7 +1089,7 @@ function updateSafetyWeeks(code,val){
   if(row) row.className=getRowClass(p);
   updateStats();
 }
-
+ 
 function recalcFromStock(p){
   // Recalculate weeksAvailable, stockOutDate, needsReorder, suggestedArrival
   const today=getToday();
@@ -1098,7 +1105,7 @@ function recalcFromStock(p){
     p.suggestedArrival=new Date(today.getTime()+wu*7*86400000).toISOString().slice(0,10);
   } else p.suggestedArrival=null;
 }
-
+ 
 function updateStock(code, inputEl){
   const p=products.find(x=>x.code===code);
   if(!p) return;
@@ -1113,7 +1120,7 @@ function updateStock(code, inputEl){
   const ssEl=document.getElementById('ss-'+code);
   if(ssEl) ssEl.textContent=p.safetyStock.toLocaleString();
 }
-
+ 
 function updateRef(code, month, val){
   const p=products.find(x=>x.code===code);
   if(!p) return;
@@ -1134,7 +1141,7 @@ function updateRef(code, month, val){
   if(row) row.className=getRowClass(p);
   updateStats();
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  TOOLS
 // ═══════════════════════════════════════════════
@@ -1158,7 +1165,7 @@ function updateExpiry(){
   remEl.textContent=remDays<0?`已過期 ${Math.abs(remDays)} 天`:`${remDays} 天（約${(remDays/30.4).toFixed(1)}個月）`;
   remEl.style.color=remDays<90?'var(--danger)':(remDays<180?'var(--warn)':'var(--ok)');
 }
-
+ 
 // ── Conversion rates — all managed as customRates ──
 // finG = g per 成品; rawKg = kg per 箱 of raw material
 // finPerBox is derived: (rawKg * 1000) / finG
@@ -1175,9 +1182,9 @@ const DEFAULT_CONV = [
 ];
 let customRates = [];
 const CT_LS_KEY = 'custom_conv_rates';
-
+ 
 function loadConvRates(){ updateConvDir(); calcConv(); }
-
+ 
 function updateConvDir(){
   const prodEl  = document.getElementById('conv-product');
   const dirEl   = document.getElementById('conv-dir');
@@ -1186,12 +1193,12 @@ function updateConvDir(){
   const resEl   = document.getElementById('conv-result');
   const valEl   = document.getElementById('conv-val');
   if(!prodEl||!dirEl||!lblEl||!unitEl||!resEl||!valEl) return;
-
+ 
   const idx = parseInt(prodEl.value);
   const dir = dirEl.value;
   const cr  = !isNaN(idx) ? customRates[idx] : null;
   const unit = cr ? cr.unit : '包';
-
+ 
   if(dir==='raw2fin'){
     lblEl.textContent = '原料輸入';
     unitEl.textContent = 'kg';
@@ -1202,7 +1209,7 @@ function updateConvDir(){
   resEl.classList.remove('show');
   valEl.value = '';
 }
-
+ 
 function calcConv(){
   const prodEl = document.getElementById('conv-product');
   const dirEl  = document.getElementById('conv-dir');
@@ -1211,11 +1218,11 @@ function calcConv(){
   const lblEl  = document.getElementById('conv-input-label');
   const unitEl = document.getElementById('conv-unit');
   if(!prodEl||!dirEl||!valEl||!res||!lblEl||!unitEl) return;
-
+ 
   const idx = parseInt(prodEl.value);
   const dir = dirEl.value;
   const val = parseFloat(valEl.value);
-
+ 
   if(isNaN(idx)){
     res.innerHTML='請先選擇品項';
     res.classList.add('show');
@@ -1227,10 +1234,10 @@ function calcConv(){
     res.classList.add('show');
     return;
   }
-
+ 
   const finPerBox = (cr.rawKg * 1000) / cr.finG;
   const ratio     = cr.rawKg / finPerBox; // kg per 成品
-
+ 
   if(dir==='raw2fin'){
     lblEl.textContent  = '原料輸入';
     unitEl.textContent = 'kg';
@@ -1251,7 +1258,7 @@ function calcConv(){
       `<div class="r-row"><span class="r-label">箱數</span><span class="r-val">${(val*ratio/cr.rawKg).toFixed(2)} 箱</span></div>`;
   }
 }
-
+ 
 // ── Custom Conversion Table ──
 function loadCustomRates(){
   try{
@@ -1274,7 +1281,7 @@ function loadCustomRates(){
 function saveCustomRates(){
   try{ localStorage.setItem(CT_LS_KEY, JSON.stringify(customRates)); }catch(e){}
 }
-
+ 
 function renderCtTable(){
   const tbody = document.getElementById('ct-tbody');
   if(!tbody) return;
@@ -1298,7 +1305,7 @@ function renderCtTable(){
     </tr>`;
   }).join('');
 }
-
+ 
 function renderConvSelect(){
   const sel = document.getElementById('conv-product');
   if(!sel) return;
@@ -1326,7 +1333,7 @@ function renderConvSelect(){
     unitEl.textContent = cr ? cr.unit : '包';
   }
 }
-
+ 
 function updateCtRate(i, field, val){
   if(!customRates[i]) return;
   if(field==='finG'||field==='rawKg'){
@@ -1347,7 +1354,7 @@ function updateCtRate(i, field, val){
   }
   renderConvSelect();
 }
-
+ 
 function addCustomRate(){
   const name  = document.getElementById('ct-name').value.trim();
   const finG  = parseFloat(document.getElementById('ct-fin-g').value);
@@ -1369,7 +1376,7 @@ function addCustomRate(){
   document.getElementById('ct-raw-kg').value='';
   showToast(`已新增「${name}」換算規則`);
 }
-
+ 
 function deleteCustomRate(i){
   const name = customRates[i]?.name||'';
   customRates.splice(i,1);
@@ -1380,7 +1387,7 @@ function deleteCustomRate(i){
   if(sel) sel.value='';
   if(name) showToast(`已刪除「${name}」`);
 }
-
+ 
 function calcCost(){
   const qty=parseFloat(document.getElementById('cost-qty').value)||0;
   const mat=parseFloat(document.getElementById('cost-mat').value)||0;
@@ -1396,7 +1403,7 @@ function calcCost(){
   document.getElementById('cost-r-total').textContent=fmt(total);
   document.getElementById('cost-r-unit').textContent='$'+unit.toFixed(2)+' / 包';
 }
-
+ 
 function populatePOSelect(){
   const sel=document.getElementById('po-product');
   sel.innerHTML='<option value="">— 選擇品項 —</option>';
