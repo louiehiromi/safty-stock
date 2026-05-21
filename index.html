@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>安全庫存確認工具｜益原實業</title>
+<title>安全庫存確認工具｜益原</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 :root {
   --bg:#f5f2ee; --surface:#faf8f5; --surface2:#f0ece5;
+  --row-bg:#fbfaf8; --row-hover:#f5f2ef;
   --border:#ddd8cf; --border-light:#e8e3da;
-  --text:#35302c; --text-sub:#7a7268; --text-faint:#a89f94;
+  --text:#35302C; --text-sub:#7a7268; --text-faint:#a89f94;
   --accent:#8b7355; --accent-light:#c4aa86;
   --ok:#7a9e87; --ok-bg:#f0f5f1; --ok-border:#b8d4c0;
   --warn:#c4935a; --warn-bg:#faf3ea; --warn-border:#e0be94;
@@ -148,11 +149,17 @@ thead th{
   /* recreate border since border-collapse hides it under sticky */
   box-shadow:0 1px 0 var(--border),inset 0 -1px 0 var(--border);
 }
-tbody tr{border-bottom:1px solid var(--border-light)}
+tbody tr{border-bottom:1px solid var(--border-light);background:var(--row-bg);transition:background .12s}
 tbody tr:last-child{border-bottom:none}
-tbody tr.row-danger{background:var(--danger-bg)}
-tbody tr.row-warn{background:var(--warn-bg)}
-tbody tr.row-ok{background:var(--surface)}
+/* 品項列不再依庫存狀況改變底色，統一使用一般底色 */
+tbody tr.row-danger,
+tbody tr.row-warn,
+tbody tr.row-ok{background:var(--row-bg)}
+/* 滑鼠移到品項列時，僅做輕微加深提示 */
+tbody tr:hover,
+tbody tr.row-danger:hover,
+tbody tr.row-warn:hover,
+tbody tr.row-ok:hover{background:var(--row-hover)}
 tbody tr.row-hidden{opacity:.35}
 tbody td{padding:7px 10px;font-size:12.5px;vertical-align:middle}
 .cell-code{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-faint)}
@@ -1008,7 +1015,7 @@ function showToast(msg){
     t.id='toast';
     Object.assign(t.style,{
       position:'fixed',bottom:'24px',left:'50%',transform:'translateX(-50%)',
-      background:'#3a3530',color:'#faf8f5',fontSize:'12px',padding:'9px 18px',
+      background:'#35302C',color:'#faf8f5',fontSize:'12px',padding:'9px 18px',
       borderRadius:'20px',zIndex:'999',opacity:'0',transition:'opacity .3s',
       maxWidth:'360px',textAlign:'center',lineHeight:'1.5'
     });
