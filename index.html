@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>安全庫存確認工具｜益原</title>
+<title>安全庫存確認工具｜益原實業</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 :root {
@@ -391,7 +391,7 @@ table#mainTable tbody td:nth-child(9){
 <div class="tools-grid">
 
   <div class="tool-card">
-    <h3>生產日 ↔ 到期日計算</h3>
+    <h3>生產日與到期日計算</h3>
     <div class="form-row">
       <label>計算方向</label>
       <select class="form-select" id="ex-direction" onchange="updateExpiry()">
@@ -401,7 +401,15 @@ table#mainTable tbody td:nth-child(9){
     </div>
     <div class="form-row">
       <label id="ex-input-label">生產日</label>
-      <input type="date" class="form-input" id="ex-date" oninput="updateExpiry()">
+      <div style="position:relative;display:flex;align-items:center;width:100%">
+        <input type="text" class="form-input" id="ex-date" placeholder="2027/04/14"
+          oninput="updateExpiry()" onpaste="exHandlePaste(event)"
+          style="width:100%;padding-right:32px">
+        <input type="date" id="ex-date-picker"
+          style="position:absolute;right:0;top:0;width:32px;height:100%;opacity:0;cursor:pointer"
+          onchange="exSyncPicker(this.value)">
+        <svg style="position:absolute;right:9px;pointer-events:none;color:var(--text-faint)" width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 1.5V4M11 1.5V4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
     </div>
     <div class="form-row">
       <label>效期（月）</label>
@@ -415,7 +423,7 @@ table#mainTable tbody td:nth-child(9){
   </div>
 
   <div class="tool-card">
-    <h3>原料 ↔ 成品數量換算</h3>
+    <h3>原料與成品數量換算</h3>
     <div class="form-row">
       <label>品項</label>
       <select class="form-select" id="conv-product" onchange="loadConvRates()">
@@ -425,7 +433,7 @@ table#mainTable tbody td:nth-child(9){
     <div class="form-row">
       <label>方向</label>
       <select class="form-select" id="conv-dir" onchange="updateConvDir()">
-        <option value="raw2fin">原料(kg) → 成品</option>
+        <option value="raw2fin">原料(箱) → 成品</option>
         <option value="fin2raw">成品 → 原料(kg)</option>
       </select>
     </div>
@@ -441,7 +449,7 @@ table#mainTable tbody td:nth-child(9){
   <!-- Custom conversion table card -->
   <div class="tool-card" style="grid-column:1/-1">
     <h3>自訂原料換算表</h3>
-    <p style="font-size:11.5px;color:var(--text-sub);margin-bottom:12px">新增產品後可在上方「原料 ↔ 成品換算」選單中選用</p>
+    <p style="font-size:11.5px;color:var(--text-sub);margin-bottom:12px">新增產品後可在上方「原料與成品換算」選單中選用</p>
     <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px">
       <div style="display:flex;flex-direction:column;gap:4px">
         <span style="font-size:11px;color:var(--text-sub)">產品名稱</span>
@@ -1276,13 +1284,37 @@ function updateRef(code, month, val){
 // ═══════════════════════════════════════════════
 //  TOOLS
 // ═══════════════════════════════════════════════
+function exSyncPicker(val){
+  if(!val) return;
+  document.getElementById('ex-date').value = val.replace(/-/g,'/');
+  updateExpiry();
+}
+
+function exHandlePaste(e){
+  e.preventDefault();
+  const text = (e.clipboardData||window.clipboardData).getData('text');
+  const d = parseFlexDate(text);
+  if(d){
+    document.getElementById('ex-date').value = d.toISOString().slice(0,10).replace(/-/g,'/');
+    updateExpiry();
+  }
+}
+
+function parseFlexDate(str){
+  if(!str) return null;
+  str = str.trim().replace(/[.\u3002\/\-]/g,'/');
+  if(/^\d{8}$/.test(str)) str=str.slice(0,4)+'/'+str.slice(4,6)+'/'+str.slice(6,8);
+  const d = new Date(str.replace(/\//g,'-'));
+  return isNaN(d.getTime()) ? null : d;
+}
+
 function updateExpiry(){
   const dir=document.getElementById('ex-direction').value;
   document.getElementById('ex-input-label').textContent=dir==='prod2exp'?'生產日':'到期日';
   const dv=document.getElementById('ex-date').value;
+  const inp=parseFlexDate(dv);
+  if(!inp) return;
   const shelf=parseInt(document.getElementById('ex-shelf').value)||18;
-  if(!dv) return;
-  const inp=new Date(dv);
   const today=getToday();
   let prod,exp;
   if(dir==='prod2exp'){prod=inp;exp=new Date(inp);exp.setMonth(exp.getMonth()+shelf);}
@@ -1332,7 +1364,7 @@ function updateConvDir(){
 
   if(dir==='raw2fin'){
     lblEl.textContent = '原料輸入';
-    unitEl.textContent = 'kg';
+    unitEl.textContent = '箱';
   } else {
     lblEl.textContent = '成品數量';
     unitEl.textContent = unit;
@@ -1371,13 +1403,13 @@ function calcConv(){
 
   if(dir==='raw2fin'){
     lblEl.textContent  = '原料輸入';
-    unitEl.textContent = 'kg';
+    unitEl.textContent = '箱';
     if(isNaN(val)){ res.classList.remove('show'); return; }
+    const kg = val * cr.rawKg;
     res.classList.add('show');
     res.innerHTML =
-      `<div class="r-row"><span class="r-label">原料輸入</span><span class="r-val">${val} kg</span></div>`+
-      `<div class="r-row"><span class="r-label">成品產出</span><span class="r-val">${Math.round(val/ratio)} ${cr.unit}</span></div>`+
-      `<div class="r-row"><span class="r-label">箱數</span><span class="r-val">${(val/cr.rawKg).toFixed(2)} 箱</span></div>`;
+      `<div class="r-row"><span class="r-label">原料輸入</span><span class="r-val">${val} 箱（${kg} kg）</span></div>`+
+      `<div class="r-row"><span class="r-label">成品產出</span><span class="r-val">${Math.round(kg/ratio)} ${cr.unit}</span></div>`;
   } else {
     lblEl.textContent  = '成品數量';
     unitEl.textContent = cr.unit;
