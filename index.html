@@ -753,10 +753,16 @@ function extractWorkOrders(rows){
     code = cleanText(code).match(/P\d{5}/)?.[0] || '';
     if(!code || !detail) return;
     const remaining = parseNumber(detail.remaining);
-    // 未生產為 0、空白、負數，都視為沒有未完成工單
-    if(remaining <= 0) return;
-    if(!ordersByCode[code]) ordersByCode[code] = [];
-    ordersByCode[code].push({...detail, remaining});
+    if(remaining < 0) return; // negative = ignore; 0 is still valid to track
+    if(!ordersByCode[code]) ordersByCode[code] = {};
+    const key = detail.woNum;
+    if(!ordersByCode[code][key]){
+      // First row for this woNum+code: store it
+      ordersByCode[code][key] = {...detail, remaining};
+    } else {
+      // Subsequent row: take MIN remaining (bottle-neck logic)
+      ordersByCode[code][key].remaining = Math.min(ordersByCode[code][key].remaining, remaining);
+    }
   }
 
   rows.forEach(row=>{
@@ -801,7 +807,13 @@ function extractWorkOrders(rows){
     }
   });
 
-  return ordersByCode;
+  // Convert {code: {woNum: detail}} → {code: [detail, ...]} sorted by deliveryDate
+  const result = {};
+  for(const code in ordersByCode){
+    result[code] = Object.values(ordersByCode[code])
+      .sort((a,b) => (a.deliveryDate||'').localeCompare(b.deliveryDate||''));
+  }
+  return result;
 }
 
 function applyWorkOrders(ordersByCode){
