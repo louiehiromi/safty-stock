@@ -315,19 +315,19 @@ table#mainTable tbody td:nth-child(9){
   <!-- Topbar: uploads + stats combined -->
   <div class="topbar">
     <div class="topbar-uploads">
-      <div class="upload-slot" id="slot-sales" onclick="triggerUpload('sales')">
+      <div class="upload-slot" id="slot-sales">
         <input type="file" id="file-sales" accept=".xlsx,.xls" onchange="handleUpload('sales',this)">
         <div class="sl-title">年度銷售</div>
         <div class="sl-status" id="sales-status">點擊上傳 品項年銷統計.xlsx</div>
         <div class="sl-time" id="sales-time">—</div>
       </div>
-      <div class="upload-slot" id="slot-inv" onclick="triggerUpload('inv')">
+      <div class="upload-slot" id="slot-inv">
         <input type="file" id="file-inv" accept=".xlsx,.xls" onchange="handleUpload('inv',this)">
         <div class="sl-title">現有庫存</div>
         <div class="sl-status" id="inv-status">點擊上傳 _庫存_now_.xlsx</div>
         <div class="sl-time" id="inv-time">—</div>
       </div>
-      <div class="upload-slot" id="slot-wo" onclick="triggerUpload('wo')">
+      <div class="upload-slot" id="slot-wo">
         <input type="file" id="file-wo" accept=".xlsx,.xls" onchange="handleUpload('wo',this)">
         <div class="sl-title">生產工單</div>
         <div class="sl-status" id="wo-status">點擊上傳 生產工單進行狀況.xlsx</div>
@@ -549,13 +549,10 @@ const SLOT_CFG = {
   sales:{label:'年度銷售',hint:'品項年銷統計.xlsx'}
 };
 
-function triggerUpload(type){
-  // Let the file input handle it natively (it overlaps the slot via position:absolute)
-}
-
 function handleUpload(type, input){
   const file = input.files[0];
   if(!file) return;
+  input.value = ''; // reset so same file can be uploaded again next time
   const now = new Date();
   const ts = now.toLocaleDateString('zh-TW')+'  '+now.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
   const meta = {name:file.name, time:ts};
