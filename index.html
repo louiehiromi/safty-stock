@@ -434,7 +434,7 @@ table#mainTable tbody td:nth-child(9){
       <label>方向</label>
       <select class="form-select" id="conv-dir" onchange="updateConvDir()">
         <option value="raw2fin">原料(箱) → 成品</option>
-        <option value="fin2raw">成品 → 原料(kg)</option>
+        <option value="fin2raw">成品 → 原料</option>
       </select>
     </div>
     <div class="form-row">
@@ -1394,7 +1394,7 @@ const DEFAULT_CONV = [
 let customRates = [];
 const CT_LS_KEY = 'custom_conv_rates';
 
-function loadConvRates(){ updateConvDir(); calcConv(); }
+function loadConvRates(){ updateConvDir(); }
 
 function updateConvDir(){
   const prodEl  = document.getElementById('conv-product');
@@ -1408,14 +1408,13 @@ function updateConvDir(){
   const idx = parseInt(prodEl.value);
   const dir = dirEl.value;
   const cr  = !isNaN(idx) ? customRates[idx] : null;
-  const unit = cr ? cr.unit : '包';
 
   if(dir==='raw2fin'){
-    lblEl.textContent = '原料輸入';
+    lblEl.textContent  = '原料輸入';
     unitEl.textContent = '箱';
   } else {
-    lblEl.textContent = '成品數量';
-    unitEl.textContent = unit;
+    lblEl.textContent  = '成品數量';
+    unitEl.textContent = cr ? cr.unit : '包';
   }
   resEl.classList.remove('show');
   valEl.value = '';
